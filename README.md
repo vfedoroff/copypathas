@@ -4,6 +4,10 @@
 
 Copy Path As adds path-copying commands to the Finder context menu. Select one or more files or folders, right-click, and choose the format you need.
 
+## See It in Action
+
+![Copy Path As Finder context-menu workflow](docs/assets/copy-path-as-demo.gif)
+
 ## Available Formats
 
 | Format | Example |
