@@ -109,6 +109,7 @@ Split documentation by audience instead of keeping user and developer material i
 
 `README.md` is the user-facing entry point. Keep:
 
+- A compact Shields.io badge row for the latest release, macOS 15+, Swift 6, and the MIT license. Each badge links to its relevant release, platform, language, or license destination; do not claim CI or coverage status that the repository does not publish.
 - What Copy Path As does and the available output formats.
 - Supported macOS versions.
 - Release installation and first-run instructions.

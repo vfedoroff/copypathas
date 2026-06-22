@@ -202,7 +202,16 @@ git commit -m "test: verify Finder extension process recovery"
 
 - [ ] **Step 1: Rewrite README for users**
 
-Keep purpose, format examples, supported macOS versions, release installation, first-run enabling, usage, and concise troubleshooting. State exactly that macOS loads the enabled extension when Finder starts and Copy Path As need not remain open or be a login item. Replace developer details with a link to `CONTRIBUTING.md`.
+Keep purpose, format examples, supported macOS versions, release installation, first-run enabling, usage, and concise troubleshooting. Add a compact Shields.io row for latest GitHub release, macOS 15+, Swift 6, and MIT license, linking each badge to its relevant destination. Do not add build or coverage badges because this repository does not publish those results. State exactly that macOS loads the enabled extension when Finder starts and Copy Path As need not remain open or be a login item. Replace developer details with a link to `CONTRIBUTING.md`.
+
+Use these badge sources:
+
+```markdown
+[![Latest release](https://img.shields.io/github/v/release/vfedoroff/copypathas)](https://github.com/vfedoroff/copypathas/releases/latest)
+[![macOS 15+](https://img.shields.io/badge/macOS-15%2B-black?logo=apple)](#requirements)
+[![Swift 6](https://img.shields.io/badge/Swift-6-F05138?logo=swift&logoColor=white)](https://www.swift.org/)
+[![MIT License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+```
 
 - [ ] **Step 2: Create the contributor guide**
 
