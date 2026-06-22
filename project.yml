@@ -1,0 +1,125 @@
+name: CopyPath
+options:
+  bundleIdPrefix: com.vfedoroff
+  deploymentTarget:
+    macOS: "15.0"
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "15.0"
+    DEVELOPMENT_TEAM: ""
+targets:
+  CopyPathCore:
+    type: framework
+    platform: macOS
+    sources: [Sources/CopyPathCore]
+    info:
+      path: Sources/CopyPathCore/Info.plist
+      properties:
+        CFBundlePackageType: FMWK
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vfedoroff.CopyPathAs.Core
+        APPLICATION_EXTENSION_API_ONLY: YES
+        DEFINES_MODULE: YES
+  CopyPathAs:
+    type: application
+    platform: macOS
+    sources: [Sources/CopyPathAs]
+    entitlements:
+      path: Sources/CopyPathAs/CopyPathAs.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+    info:
+      path: Sources/CopyPathAs/Info.plist
+      properties:
+        CFBundleDisplayName: "Copy Path As"
+        LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        NSHumanReadableCopyright: ""
+    dependencies:
+      - target: CopyPathCore
+        embed: true
+      - target: CopyPathFinderExtension
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vfedoroff.CopyPathAs
+        PRODUCT_NAME: CopyPathAs
+        CODE_SIGN_ENTITLEMENTS: Sources/CopyPathAs/CopyPathAs.entitlements
+        GENERATE_INFOPLIST_FILE: NO
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  CopyPathFinderExtension:
+    type: app-extension
+    platform: macOS
+    sources: [Sources/CopyPathFinderExtension]
+    entitlements:
+      path: Sources/CopyPathFinderExtension/CopyPathFinderExtension.entitlements
+      properties:
+        com.apple.security.app-sandbox: true
+    info:
+      path: Sources/CopyPathFinderExtension/Info.plist
+      properties:
+        CFBundleDisplayName: "Copy Path As"
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.FinderSync
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).FinderSync
+    dependencies:
+      - target: CopyPathCore
+        embed: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vfedoroff.CopyPathAs.FinderExtension
+        PRODUCT_NAME: CopyPathFinderExtension
+        CODE_SIGN_ENTITLEMENTS: Sources/CopyPathFinderExtension/CopyPathFinderExtension.entitlements
+        APPLICATION_EXTENSION_API_ONLY: YES
+        GENERATE_INFOPLIST_FILE: NO
+        SKIP_INSTALL: YES
+  CopyPathTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - Tests/CopyPathTests
+      - Sources/CopyPathAs/AppLifecycleDelegate.swift
+      - path: Sources/CopyPathFinderExtension
+        excludes:
+          - Info.plist
+          - CopyPathFinderExtension.entitlements
+    dependencies:
+      - target: CopyPathCore
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vfedoroff.CopyPathAs.Tests
+  CopyPathUITests:
+    type: bundle.ui-testing
+    platform: macOS
+    sources: [Tests/CopyPathUITests]
+    dependencies:
+      - target: CopyPathAs
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.vfedoroff.CopyPathAs.UITests
+        GENERATE_INFOPLIST_FILE: YES
+        TEST_TARGET_NAME: CopyPathAs
+schemes:
+  CopyPath:
+    build:
+      targets:
+        CopyPathAs: all
+        CopyPathTests: [test]
+    test:
+      targets:
+        - CopyPathTests
+        - CopyPathUITests
+  CopyPathUnitTests:
+    build:
+      targets:
+        CopyPathTests: [test]
+    test:
+      targets:
+        - CopyPathTests
+  CopyPathFinderExtension:
+    build:
+      targets:
+        CopyPathFinderExtension: all
+    run:
+      config: Debug
