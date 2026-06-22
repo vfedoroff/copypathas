@@ -3,5 +3,6 @@
 build/
 DerivedData*/
 .worktrees/
+docs/superpowers/
 *.xcuserstate
 xcuserdata/
