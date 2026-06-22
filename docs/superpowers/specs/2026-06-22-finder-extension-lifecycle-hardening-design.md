@@ -105,13 +105,30 @@ Normal CI runs unit tests and build verification only. The desktop lifecycle che
 
 ## Documentation
 
-Update the README to state clearly that:
+Split documentation by audience instead of keeping user and developer material in one README.
 
-- The Finder extension is managed by macOS and does not require the containing app to stay open.
-- The user must enable it once in System Settings.
-- The lifecycle verification command restarts Finder and requires desktop permissions.
+`README.md` is the user-facing entry point. Keep:
 
-This prevents users and contributors from treating the containing app as a required startup process.
+- What Copy Path As does and the available output formats.
+- Supported macOS versions.
+- Release installation and first-run instructions.
+- The one-time System Settings step required to enable the Finder extension.
+- Normal usage and concise troubleshooting.
+- A clear statement that macOS manages the extension and the containing app does not need to remain open or start at login.
+- A short link to `CONTRIBUTING.md` for source builds and development.
+
+Create `CONTRIBUTING.md` for contributors. Move or rewrite:
+
+- Prerequisites and source checkout setup.
+- XcodeGen, signing, and local build instructions.
+- Target structure and dependency boundaries.
+- Makefile and script-based workflows.
+- Unit, UI, and lifecycle test guidance.
+- Finder extension debugging and diagnostics.
+- The warning that lifecycle verification restarts Finder and requires Accessibility/Automation permissions.
+- Expectations for keeping `project.yml` as the project source of truth and adding regression tests with changes.
+
+Avoid duplicating detailed commands between the two files. User installation stays in the README; developer installation and verification stay in the contributing guide. This prevents users and contributors from treating the containing app as a required startup process and makes contributor-only desktop disruption explicit.
 
 ## Scope
 
@@ -122,7 +139,7 @@ Included:
 - Privacy-safe lifecycle diagnostics.
 - Unit coverage for directory registration and refresh behavior.
 - Opt-in verification of Finder restart and extension-process recovery.
-- README lifecycle documentation.
+- A user-focused README and a separate contributor guide.
 
 Excluded:
 
