@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0325BCBC47DAC0FEC3B3728E /* AppLifecycleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D992C96960984E57B727F6F /* AppLifecycleDelegate.swift */; };
+		0566832B17C30CCCBABC12C4 /* MonitoredDirectoryRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5663889CD70861BD3D634543 /* MonitoredDirectoryRegistryTests.swift */; };
 		079ADC9AABBD002E78A4B8B6 /* CopyPathCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2442570C5A760DF4DA1E1A69 /* CopyPathCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0DE56BD6AC0F56BA78123B34 /* CopyPathFinderExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 47F0FD9BA20FF41EE87E0FCD /* CopyPathFinderExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0FCE52BE6424C74E6E680D46 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9C7746EAF2459FA1B19A76 /* SettingsView.swift */; };
@@ -16,6 +17,7 @@
 		2974B88D7F87F3B083814674 /* FinderSelectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05770B23570785911851C /* FinderSelectionProvider.swift */; };
 		355C537EAA5B8D4449B859BF /* PasteboardClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B603D4DE54BE7761B6B73A90 /* PasteboardClipboardService.swift */; };
 		35A0A330C888AD234596237B /* FinderSelectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05770B23570785911851C /* FinderSelectionProvider.swift */; };
+		37583DDA2498F8F6D65F45FE /* MonitoredDirectoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FF2B8C237E82DB5339F351 /* MonitoredDirectoryRegistry.swift */; };
 		45BEB1AEBE232210FD71C717 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD96F551F054FF68ED09B8 /* FinderSync.swift */; };
 		536EE6ACFBCA204CB4F07273 /* CopyPathAs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F87B66459F88C9F67C24BD5 /* CopyPathAs.swift */; };
 		618DD43B3ABE0B18C225A8CD /* CopyPathCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2442570C5A760DF4DA1E1A69 /* CopyPathCore.framework */; };
@@ -29,6 +31,7 @@
 		B273E7457AA4E4D369312C87 /* CopyPathCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2442570C5A760DF4DA1E1A69 /* CopyPathCore.framework */; };
 		B443B73103F8237A022B0C8F /* FormatPathsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8640037C36329118A7C81564 /* FormatPathsUseCaseTests.swift */; };
 		B7D70738372833DEF47694E3 /* PathFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77C6F8E670ECE3E914A7241D /* PathFormatter.swift */; };
+		C86040B04A9CC9BC677BEEA5 /* MonitoredDirectoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FF2B8C237E82DB5339F351 /* MonitoredDirectoryRegistry.swift */; };
 		D3A021FC1666A5190ADE0BED /* PathFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAE28E2047FEDED37F7114E /* PathFormatterTests.swift */; };
 		D5DA127B2A6E84818EB679F4 /* CopyPathCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2442570C5A760DF4DA1E1A69 /* CopyPathCore.framework */; };
 		DAD9C9BEF8F77A446CCE71EF /* PasteboardClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B603D4DE54BE7761B6B73A90 /* PasteboardClipboardService.swift */; };
@@ -134,6 +137,7 @@
 		46D5676EA225974486F19201 /* FinderExtensionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderExtensionManager.swift; sourceTree = "<group>"; };
 		47F0FD9BA20FF41EE87E0FCD /* CopyPathFinderExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CopyPathFinderExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CAD96F551F054FF68ED09B8 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
+		5663889CD70861BD3D634543 /* MonitoredDirectoryRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredDirectoryRegistryTests.swift; sourceTree = "<group>"; };
 		5982108F58F3E99E26CC9C67 /* CopyPathUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPathUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		67B6BFCF7CAB3251213D0CE3 /* AppLifecycleDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleDelegateTests.swift; sourceTree = "<group>"; };
 		77C6F8E670ECE3E914A7241D /* PathFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathFormatter.swift; sourceTree = "<group>"; };
@@ -151,6 +155,7 @@
 		B391ACE0AD26F4D6FA65E9B8 /* CopyPathUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyPathUITests.swift; sourceTree = "<group>"; };
 		B603D4DE54BE7761B6B73A90 /* PasteboardClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardClipboardService.swift; sourceTree = "<group>"; };
 		CAAE28E2047FEDED37F7114E /* PathFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathFormatterTests.swift; sourceTree = "<group>"; };
+		D6FF2B8C237E82DB5339F351 /* MonitoredDirectoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredDirectoryRegistry.swift; sourceTree = "<group>"; };
 		DAE05770B23570785911851C /* FinderSelectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSelectionProvider.swift; sourceTree = "<group>"; };
 		E1CBE0B5A26DE4655621CE3E /* FormatPathsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatPathsUseCase.swift; sourceTree = "<group>"; };
 		E3E404C960A9F0D571346AA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -206,6 +211,7 @@
 				DAE05770B23570785911851C /* FinderSelectionProvider.swift */,
 				4CAD96F551F054FF68ED09B8 /* FinderSync.swift */,
 				1701249D86DE2DB46A5B7375 /* Info.plist */,
+				D6FF2B8C237E82DB5339F351 /* MonitoredDirectoryRegistry.swift */,
 				B603D4DE54BE7761B6B73A90 /* PasteboardClipboardService.swift */,
 			);
 			name = CopyPathFinderExtension;
@@ -281,6 +287,7 @@
 				67B6BFCF7CAB3251213D0CE3 /* AppLifecycleDelegateTests.swift */,
 				A5174D10CD8A9908EA0594DC /* FinderMenuTests.swift */,
 				8640037C36329118A7C81564 /* FormatPathsUseCaseTests.swift */,
+				5663889CD70861BD3D634543 /* MonitoredDirectoryRegistryTests.swift */,
 				CAAE28E2047FEDED37F7114E /* PathFormatterTests.swift */,
 			);
 			name = CopyPathTests;
@@ -497,6 +504,7 @@
 			files = (
 				35A0A330C888AD234596237B /* FinderSelectionProvider.swift in Sources */,
 				45BEB1AEBE232210FD71C717 /* FinderSync.swift in Sources */,
+				C86040B04A9CC9BC677BEEA5 /* MonitoredDirectoryRegistry.swift in Sources */,
 				355C537EAA5B8D4449B859BF /* PasteboardClipboardService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -511,6 +519,8 @@
 				2974B88D7F87F3B083814674 /* FinderSelectionProvider.swift in Sources */,
 				81CCDBFD58407F244A04BE81 /* FinderSync.swift in Sources */,
 				B443B73103F8237A022B0C8F /* FormatPathsUseCaseTests.swift in Sources */,
+				37583DDA2498F8F6D65F45FE /* MonitoredDirectoryRegistry.swift in Sources */,
+				0566832B17C30CCCBABC12C4 /* MonitoredDirectoryRegistryTests.swift in Sources */,
 				DAD9C9BEF8F77A446CCE71EF /* PasteboardClipboardService.swift in Sources */,
 				D3A021FC1666A5190ADE0BED /* PathFormatterTests.swift in Sources */,
 			);
