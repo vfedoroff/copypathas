@@ -1,18 +1,16 @@
+import AppKit
 import FinderSync
 import Foundation
 import OSLog
 
-@MainActor
 protocol MountedVolumeProviding: AnyObject {
     func mountedVolumeURLs() -> [URL]?
 }
 
-@MainActor
 protocol MonitoredDirectoryApplying: AnyObject {
     func replaceMonitoredDirectories(with urls: Set<URL>)
 }
 
-@MainActor
 final class FileManagerMountedVolumeProvider: MountedVolumeProviding {
     func mountedVolumeURLs() -> [URL]? {
         FileManager.default.mountedVolumeURLs(
@@ -22,18 +20,17 @@ final class FileManagerMountedVolumeProvider: MountedVolumeProviding {
     }
 }
 
-@MainActor
 final class FinderSyncDirectoryApplier: MonitoredDirectoryApplying {
     func replaceMonitoredDirectories(with urls: Set<URL>) {
         FIFinderSyncController.default().directoryURLs = urls
     }
 }
 
-@MainActor
 final class MonitoredDirectoryRegistry: NSObject {
     private let volumeProvider: MountedVolumeProviding
     private let applier: MonitoredDirectoryApplying
     private let logger: Logger
+    private weak var notificationCenter: NotificationCenter?
 
     init(
         volumeProvider: MountedVolumeProviding = FileManagerMountedVolumeProvider(),
@@ -48,6 +45,24 @@ final class MonitoredDirectoryRegistry: NSObject {
         self.logger = logger
     }
 
+    func startObserving(_ center: NotificationCenter) {
+        notificationCenter?.removeObserver(self)
+        notificationCenter = center
+        center.addObserver(
+            self,
+            selector: #selector(volumeConfigurationDidChange(_:)),
+            name: NSWorkspace.didMountNotification,
+            object: nil
+        )
+        center.addObserver(
+            self,
+            selector: #selector(volumeConfigurationDidChange(_:)),
+            name: NSWorkspace.didUnmountNotification,
+            object: nil
+        )
+        refresh()
+    }
+
     func refresh() {
         var urls: Set<URL> = [URL(fileURLWithPath: "/", isDirectory: true)]
         if let mountedURLs = volumeProvider.mountedVolumeURLs() {
@@ -58,5 +73,14 @@ final class MonitoredDirectoryRegistry: NSObject {
 
         applier.replaceMonitoredDirectories(with: urls)
         logger.info("Refreshed monitored directories; root count: \(urls.count, privacy: .public)")
+    }
+
+    @objc private func volumeConfigurationDidChange(_ notification: Notification) {
+        logger.info("Volume configuration changed; refreshing monitored directories")
+        refresh()
+    }
+
+    deinit {
+        notificationCenter?.removeObserver(self)
     }
 }

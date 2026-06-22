@@ -1,3 +1,4 @@
+import AppKit
 import Foundation
 import Testing
 
@@ -46,9 +47,32 @@ struct MonitoredDirectoryRegistryTests {
         #expect(applier.snapshots.last == [root, second])
         #expect(applier.snapshots.last?.contains(first) == false)
     }
+
+    @Test("mount and unmount notifications refresh the latest complete snapshot")
+    func notificationsRefreshLatestSnapshot() {
+        let first = URL(fileURLWithPath: "/Volumes/First", isDirectory: true)
+        let second = URL(fileURLWithPath: "/Volumes/Second", isDirectory: true)
+        let provider = FakeMountedVolumeProvider(urls: [first])
+        let applier = RecordingDirectoryApplier()
+        let center = NotificationCenter()
+        let registry = MonitoredDirectoryRegistry(volumeProvider: provider, applier: applier)
+
+        registry.startObserving(center)
+        provider.urls = [second]
+        center.post(name: NSWorkspace.didMountNotification, object: nil, userInfo: [:])
+        center.post(
+            name: NSWorkspace.didUnmountNotification,
+            object: nil,
+            userInfo: ["invalid": 1]
+        )
+
+        let expected: Set<URL> = [root, second]
+        #expect(applier.snapshots.count == 3)
+        #expect(applier.snapshots[1] == expected)
+        #expect(applier.snapshots[2] == expected)
+    }
 }
 
-@MainActor
 private final class FakeMountedVolumeProvider: MountedVolumeProviding {
     var urls: [URL]?
 
@@ -61,7 +85,6 @@ private final class FakeMountedVolumeProvider: MountedVolumeProviding {
     }
 }
 
-@MainActor
 private final class RecordingDirectoryApplier: MonitoredDirectoryApplying {
     private(set) var snapshots: [Set<URL>] = []
 

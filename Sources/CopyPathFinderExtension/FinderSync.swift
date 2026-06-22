@@ -4,6 +4,7 @@ import FinderSync
 import OSLog
 
 final class FinderSync: FIFinderSync {
+    private let directoryRegistry = MonitoredDirectoryRegistry()
     private let selectionProvider = FinderSelectionProvider()
     private let useCase = FormatPathsUseCase(
         formatter: PathFormatter(),
@@ -16,10 +17,8 @@ final class FinderSync: FIFinderSync {
 
     override init() {
         super.init()
-        registerAvailableVolumes()
-        let center = NSWorkspace.shared.notificationCenter
-        center.addObserver(self, selector: #selector(volumeDidMount(_:)), name: NSWorkspace.didMountNotification, object: nil)
-        center.addObserver(self, selector: #selector(volumeDidUnmount(_:)), name: NSWorkspace.didUnmountNotification, object: nil)
+        logger.info("Finder extension initialized")
+        directoryRegistry.startObserving(NSWorkspace.shared.notificationCenter)
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
@@ -80,23 +79,4 @@ final class FinderSync: FIFinderSync {
         }
     }
 
-    private func registerAvailableVolumes() {
-        var roots: Set<URL> = [URL(fileURLWithPath: "/", isDirectory: true)]
-        let volumes = FileManager.default.mountedVolumeURLs(
-            includingResourceValuesForKeys: nil,
-            options: [.skipHiddenVolumes]
-        ) ?? []
-        roots.formUnion(volumes)
-        FIFinderSyncController.default().directoryURLs = roots
-    }
-
-    @objc private func volumeDidMount(_ notification: Notification) {
-        guard let url = notification.userInfo?[NSWorkspace.volumeURLUserInfoKey] as? URL else { return }
-        FIFinderSyncController.default().directoryURLs.insert(url)
-    }
-
-    @objc private func volumeDidUnmount(_ notification: Notification) {
-        guard let url = notification.userInfo?[NSWorkspace.volumeURLUserInfoKey] as? URL else { return }
-        FIFinderSyncController.default().directoryURLs.remove(url)
-    }
 }
