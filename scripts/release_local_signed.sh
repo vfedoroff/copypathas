@@ -130,7 +130,7 @@ xcodebuild archive \
   -destination 'generic/platform=macOS' \
   -configuration Release \
   CODE_SIGN_IDENTITY="$SIGNING_IDENTITY" \
-  CODE_SIGN_STYLE=Automatic
+  CODE_SIGN_STYLE=Manual
 
 echo "Extracting app bundle..."
 cp -R "$ARCHIVE_PATH/Products/Applications/$APP_NAME.app" "$APP_PATH"
