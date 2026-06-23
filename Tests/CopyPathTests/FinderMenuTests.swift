@@ -15,16 +15,31 @@ struct FinderMenuTests {
 
         let submenu = try #require(rootItem.submenu)
         #expect(submenu.items.map(\.title) == [
-            "Copy Path",
-            "Quoted Path",
-            "Shell-Escaped Path",
+            "Absolute Path",
+            "Single Quoted",
+            "Shell Escaped",
+            "Home Relative",
+            "Git Relative",
             "File URL",
+            "JSON String",
+            "JSON Array",
+            "Markdown Link",
             "Filename",
             "Filename Without Extension",
             "Parent Folder",
-            "JSON Array",
-            "Markdown Link",
         ])
+    }
+
+    @Test("exposes every format in the container background context menu")
+    func containerSubmenu() throws {
+        let menu = FinderSync().menu(for: .contextualMenuForContainer)
+
+        #expect(menu.items.count == 1)
+        let rootItem = try #require(menu.items.first)
+        #expect(rootItem.title == "Copy Path As")
+
+        let submenu = try #require(rootItem.submenu)
+        #expect(submenu.items.count == PathFormat.allCases.count)
     }
 
     @Test("routes commands through selectors that survive Finder serialization")

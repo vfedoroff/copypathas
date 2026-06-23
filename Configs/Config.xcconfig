@@ -1,0 +1,18 @@
+// Config.xcconfig
+// Default configuration settings for all developers.
+// This file is committed to Git.
+
+// Fallback defaults if Config.local.xcconfig is missing
+DEVELOPMENT_TEAM = $(inherited)
+CODE_SIGN_IDENTITY = -
+CODE_SIGN_STYLE = Automatic
+
+// Default App Group and Sandbox settings for local contributor builds:
+// In local contributor builds, we build unsandboxed without App Groups.
+// In release/maintainer builds, we override these via Config.local.xcconfig.
+ENTITLEMENTS_HOST =
+ENTITLEMENTS_EXTENSION = Sources/CopyPathFinderExtension/CopyPathFinderExtension-Local.entitlements
+
+// Include optional local configuration (for developer-specific team and group overrides).
+// Note the "?" which makes the include optional: it won't fail if the file is missing.
+#include? "Config.local.xcconfig"

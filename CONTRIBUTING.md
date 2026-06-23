@@ -58,12 +58,13 @@ The extension must reconstruct its state whenever Finder creates a new instance.
 ## Build and Test Commands
 
 ```sh
-make build             # Generate the project and build without signing
+make build             # Generate the project and build with local signing defaults
 make test              # Run unit tests
 make test-ui           # Run unit and settings UI tests
 make lint              # Run SwiftLint
-make run               # Build, install to ~/Applications, and open the app
+make run               # Build, install to /Applications, and open the app
 make package           # Create ad-hoc signed ZIP and DMG artifacts
+make release-local     # Maintainer-only signed, notarized, published release
 make clean             # Remove generated project and build output
 ```
 
@@ -81,7 +82,35 @@ UI changes also require `make test-ui`. Changes to Finder startup, process owner
 
 For normal Xcode development, select the same development team for `CopyPathAs`, `CopyPathFinderExtension`, and `CopyPathCore`. Build and run the `CopyPath` scheme once from a stable app location, then enable the extension in **System Settings → General → Login Items & Extensions → Finder Extensions**.
 
-`scripts/build_and_run.sh` builds the app, installs it under `~/Applications`, registers the embedded extension, and opens the settings app. The stable install path matters because Finder extension registration should not point at transient DerivedData products.
+`scripts/build_and_run.sh` builds the app, installs it under `/Applications` by default, registers the embedded extension, and opens the settings app. Set `COPYPATH_INSTALL_DIR` to use a different stable install location. The stable install path matters because Finder extension registration should not point at transient DerivedData products.
+
+## Maintainer Release Flow
+
+Public CI does not store Apple signing certificates, provisioning profiles, or App Store Connect credentials. Maintainers publish signed releases from a local Mac that already has the Developer ID certificate in Keychain and a `notarytool` keychain profile.
+
+One-time local setup:
+
+```sh
+cp Configs/Config.local.xcconfig.template Configs/Config.local.xcconfig
+# Set DEVELOPMENT_TEAM in Configs/Config.local.xcconfig.
+xcrun notarytool store-credentials copypath-notary
+```
+
+Release from an exact tag checkout:
+
+```sh
+export COPYPATH_NOTARY_PROFILE=copypath-notary
+make test
+make release-local
+```
+
+Or pass a tag explicitly:
+
+```sh
+COPYPATH_NOTARY_PROFILE=copypath-notary ./scripts/release_local_signed.sh --tag v0.3.0 --publish
+```
+
+The local release script builds the Release archive, Developer ID signs it, notarizes and staples the app, creates ZIP and DMG artifacts, notarizes and staples the DMG, writes SHA-256 checksums, and uploads the release assets with `gh`. The GitHub release follow-up workflow updates the Homebrew tap after the signed DMG is published.
 
 ## Desktop Lifecycle Verification
 

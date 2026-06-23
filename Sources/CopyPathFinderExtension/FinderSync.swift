@@ -19,10 +19,12 @@ final class FinderSync: FIFinderSync {
         super.init()
         logger.info("Finder extension initialized")
         directoryRegistry.startObserving(NSWorkspace.shared.notificationCenter)
+        updateHeartbeat()
     }
 
     override func menu(for menuKind: FIMenuKind) -> NSMenu {
-        guard menuKind == .contextualMenuForItems else { return NSMenu() }
+        updateHeartbeat()
+        guard menuKind == .contextualMenuForItems || menuKind == .contextualMenuForContainer else { return NSMenu() }
 
         let menu = NSMenu(title: "Copy Path As")
         let formatsMenu = NSMenu(title: "Copy Path As")
@@ -35,9 +37,12 @@ final class FinderSync: FIFinderSync {
         return menu
     }
 
+    private func updateHeartbeat() {
+        SharedPreferenceStore.shared.set(Date().timeIntervalSince1970, forKey: "extensionLastActiveTimestamp")
+    }
+
     private func makeItem(for format: PathFormat) -> NSMenuItem {
-        let title = format == .path ? "Copy Path" : format.displayName
-        let item = NSMenuItem(title: title, action: action(for: format), keyEquivalent: "")
+        let item = NSMenuItem(title: format.displayName, action: action(for: format), keyEquivalent: "")
         item.target = self
         return item
     }
@@ -47,19 +52,25 @@ final class FinderSync: FIFinderSync {
         case .path: #selector(copyPath(_:))
         case .quotedPath: #selector(copyQuotedPath(_:))
         case .shellEscapedPath: #selector(copyShellEscapedPath(_:))
+        case .homeRelative: #selector(copyHomeRelativePath(_:))
+        case .repoRelative: #selector(copyRepoRelativePath(_:))
         case .fileURL: #selector(copyFileURL(_:))
+        case .jsonString: #selector(copyJSONString(_:))
+        case .jsonArray: #selector(copyJSONArray(_:))
+        case .markdownLink: #selector(copyMarkdownLink(_:))
         case .filename: #selector(copyFilename(_:))
         case .filenameWithoutExtension: #selector(copyFilenameWithoutExtension(_:))
         case .parentFolder: #selector(copyParentFolder(_:))
-        case .jsonArray: #selector(copyJSONArray(_:))
-        case .markdownLink: #selector(copyMarkdownLink(_:))
         }
     }
 
     @objc private func copyPath(_ sender: NSMenuItem) { copySelection(as: .path) }
     @objc private func copyQuotedPath(_ sender: NSMenuItem) { copySelection(as: .quotedPath) }
     @objc private func copyShellEscapedPath(_ sender: NSMenuItem) { copySelection(as: .shellEscapedPath) }
+    @objc private func copyHomeRelativePath(_ sender: NSMenuItem) { copySelection(as: .homeRelative) }
+    @objc private func copyRepoRelativePath(_ sender: NSMenuItem) { copySelection(as: .repoRelative) }
     @objc private func copyFileURL(_ sender: NSMenuItem) { copySelection(as: .fileURL) }
+    @objc private func copyJSONString(_ sender: NSMenuItem) { copySelection(as: .jsonString) }
     @objc private func copyFilename(_ sender: NSMenuItem) { copySelection(as: .filename) }
     @objc private func copyFilenameWithoutExtension(_ sender: NSMenuItem) { copySelection(as: .filenameWithoutExtension) }
     @objc private func copyParentFolder(_ sender: NSMenuItem) { copySelection(as: .parentFolder) }
@@ -74,9 +85,14 @@ final class FinderSync: FIFinderSync {
 
         do {
             try useCase.execute(selection: selection, format: format)
+
+            // Write copy confirmation to the Shared Preference Store
+            let copiedPreview = SharedPreferenceStore.copiedPathPreview(for: selection.urls)
+            SharedPreferenceStore.shared.set(copiedPreview, forKey: "lastCopiedPath")
+            SharedPreferenceStore.shared.set(format.displayName, forKey: "lastCopiedFormat")
+            SharedPreferenceStore.shared.set(Date().timeIntervalSince1970, forKey: "lastCopiedTimestamp")
         } catch {
             logger.error("Unable to copy formatted selection: \(error.localizedDescription, privacy: .public)")
         }
     }
-
 }

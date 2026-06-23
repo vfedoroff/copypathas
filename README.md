@@ -12,15 +12,18 @@ Copy Path As adds path-copying commands to the Finder context menu. Select one o
 
 | Format | Example |
 | --- | --- |
-| Path | `/Users/me/Projects/main.swift` |
-| Quoted Path | `"/Users/me/My Project/main.swift"` |
-| Shell-Escaped Path | `/Users/me/My\ Project/main.swift` |
+| Absolute Path | `/Users/me/Projects/main.swift` |
+| Single Quoted | `'/Users/me/My Project/main.swift'` |
+| Shell Escaped | `/Users/me/My\ Project/main.swift` |
+| Home Relative | `~/Projects/main.swift` |
+| Git Relative | `Sources/App/main.swift` |
 | File URL | `file:///Users/me/Projects/main.swift` |
+| JSON String | `"/Users/me/Projects/main.swift"` |
+| JSON Array | `["/Users/me/Projects/main.swift"]` |
+| Markdown Link | `[main.swift](file:///Users/me/Projects/main.swift)` |
 | Filename | `main.swift` |
 | Filename Without Extension | `main` |
 | Parent Folder | `/Users/me/Projects` |
-| JSON Array | `["/Users/me/Projects/main.swift"]` |
-| Markdown Link | `[main.swift](file:///Users/me/Projects/main.swift)` |
 
 For multiple selections, JSON Array produces one JSON array. Other formats produce one value per line in Finder's selection order.
 
@@ -47,7 +50,7 @@ brew install --cask vfedoroff/tap/copypathas
 4. Select **Open Finder Extension Settings**.
 5. In System Settings, enable **Copy Path As** under **General → Login Items & Extensions → Finder Extensions**.
 
-Releases are currently ad-hoc signed rather than notarized. If macOS blocks the first launch, Control-click the app in Finder, choose **Open**, and confirm that you want to open it. Only use builds downloaded from this repository's release page.
+Maintainer releases are Developer ID signed and notarized locally before upload. Only use builds downloaded from this repository's release page.
 
 ## Use
 
@@ -71,7 +74,7 @@ The extension works independently from the settings app. Reopening the app is us
 
 ## Privacy and Security
 
-The app and extension are sandboxed. Copy Path As formats file URLs supplied by Finder in memory; it does not read file contents, access the network, or collect telemetry.
+Maintainer release builds are sandboxed. Copy Path As formats file URLs supplied by Finder in memory; it does not read file contents, access the network, or collect telemetry. The settings window stores only a redacted copy confirmation such as a filename or item count, not the full copied path.
 
 ## Contributing
 

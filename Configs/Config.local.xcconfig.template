@@ -1,0 +1,11 @@
+// Config.local.xcconfig.template
+// Rename this file to Config.local.xcconfig and set your Apple Developer Team settings.
+// DO NOT commit Config.local.xcconfig to Git.
+
+DEVELOPMENT_TEAM = YOUR_10_DIGIT_TEAM_ID
+CODE_SIGN_IDENTITY = Apple Development
+CODE_SIGN_STYLE = Automatic
+
+// Enable App Sandbox and App Groups for release-ready builds
+ENTITLEMENTS_HOST = Sources/CopyPathAs/CopyPathAs.entitlements
+ENTITLEMENTS_EXTENSION = Sources/CopyPathFinderExtension/CopyPathFinderExtension.entitlements

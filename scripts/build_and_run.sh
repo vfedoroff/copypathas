@@ -9,7 +9,7 @@ ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 DERIVED_DATA="$ROOT_DIR/DerivedData"
 BUILT_APP="$DERIVED_DATA/Build/Products/Debug/CopyPathAs.app"
 BUILT_EXTENSION="$BUILT_APP/Contents/PlugIns/CopyPathFinderExtension.appex"
-INSTALL_DIR="${COPYPATH_INSTALL_DIR:-$HOME/Applications}"
+INSTALL_DIR="${COPYPATH_INSTALL_DIR:-/Applications}"
 APP_BUNDLE="$INSTALL_DIR/CopyPathAs.app"
 APP_BINARY="$APP_BUNDLE/Contents/MacOS/CopyPathAs"
 export DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"
@@ -27,10 +27,27 @@ xcodebuild build \
 # Finder extensions need a stable containing-app location to appear reliably
 # in System Settings. Do not register the transient DerivedData copy.
 mkdir -p "$INSTALL_DIR"
+
+echo "🧹 Clearing duplicate registrations..."
+set +o pipefail
+/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -dump 2>/dev/null | grep -i "path:" | grep -i "CopyPath" | sed -E 's/^path:[[:space:]]+//; s/[[:space:]]+\(0x[0-9a-fA-F]+\)//' | while read -r path; do
+  if [ -n "$path" ] && [ "$path" != "$APP_BUNDLE" ] && [ "$path" != "$APP_BUNDLE/Contents/PlugIns/CopyPathFinderExtension.appex" ]; then
+    /System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -u "$path" 2>/dev/null || true
+  fi
+done || true
+set -o pipefail
+
 /usr/bin/pluginkit -r "$BUILT_EXTENSION" >/dev/null 2>&1 || true
 /usr/bin/ditto "$BUILT_APP" "$APP_BUNDLE"
+
+# Register the stable path
+/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -f -R -trusted "$APP_BUNDLE"
 /usr/bin/pluginkit -a "$APP_BUNDLE/Contents/PlugIns/CopyPathFinderExtension.appex"
 /usr/bin/pluginkit -e use -i "$EXTENSION_ID"
+
+# Clean up transient build registrations generated during this build
+/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -u "$BUILT_APP" 2>/dev/null || true
+
 
 open_app() {
   /usr/bin/open -n "$APP_BUNDLE"

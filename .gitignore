@@ -6,3 +6,6 @@ DerivedData*/
 docs/superpowers/
 *.xcuserstate
 xcuserdata/
+
+# Local signing configuration overrides
+Configs/Config.local.xcconfig

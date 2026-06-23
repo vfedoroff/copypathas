@@ -1,4 +1,4 @@
-.PHONY: all build test test-ui run verify-lifecycle clean package unregister-all help list lint
+.PHONY: all build test test-ui run verify-lifecycle clean package release-local unregister-all help list lint
 
 all: build
 
@@ -6,15 +6,13 @@ build:
 	xcodegen generate
 	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
 		build -project CopyPath.xcodeproj -scheme CopyPath \
-		-destination 'platform=macOS' -derivedDataPath DerivedData \
-		CODE_SIGNING_ALLOWED=NO
+		-destination 'platform=macOS' -derivedDataPath DerivedData
 
 test:
 	xcodegen generate
 	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
 		test -project CopyPath.xcodeproj -scheme CopyPathUnitTests \
-		-destination 'platform=macOS' -derivedDataPath DerivedData \
-		CODE_SIGNING_ALLOWED=NO
+		-destination 'platform=macOS' -derivedDataPath DerivedData
 
 test-ui:
 	xcodegen generate
@@ -34,6 +32,9 @@ clean:
 package:
 	./scripts/package.sh
 
+release-local:
+	./scripts/release_local_signed.sh --publish
+
 unregister-all:
 	@echo "🧹 Unregistering all versions of Copy Path Finder extension..."
 	-pluginkit -r /Applications/CopyPathAs.app/Contents/PlugIns/CopyPathFinderExtension.appex 2>/dev/null
@@ -44,7 +45,7 @@ unregister-all:
 	@echo "✅ All versions unregistered. Finder restarted."
 
 lint:
-	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer swiftlint lint
+	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer swiftlint lint --no-cache
 
 help:
 	@echo "Available commands:"
@@ -56,8 +57,8 @@ help:
 	@echo "  make verify-lifecycle  - Run the lifecycle verification suite"
 	@echo "  make clean             - Remove all build and generated files"
 	@echo "  make package           - Package the app into a Release ZIP and DMG"
+	@echo "  make release-local     - Sign, notarize, package, and publish a maintainer release"
 	@echo "  make unregister-all    - Unregister all extensions and restart Finder"
 	@echo "  make help (or make list) - Display this list of options"
 
 list: help
-

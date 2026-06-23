@@ -23,7 +23,7 @@ xcodebuild archive \
   -destination 'generic/platform=macOS' \
   -configuration Release \
   CODE_SIGNING_ALLOWED=YES \
-  CODE_SIGN_IDENTITY="-" # Ad-hoc sign for Gatekeeper bypass
+  CODE_SIGN_IDENTITY="-" # Ad-hoc sign for local packaging checks
 
 echo "📂 Extracting App bundle..."
 cp -R "$BUILD_DIR/CopyPath.xcarchive/Products/Applications/CopyPathAs.app" "$EXPORT_DIR/CopyPathAs.app"

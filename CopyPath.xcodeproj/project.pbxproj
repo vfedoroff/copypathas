@@ -12,9 +12,11 @@
 		079ADC9AABBD002E78A4B8B6 /* CopyPathCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2442570C5A760DF4DA1E1A69 /* CopyPathCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		0DE56BD6AC0F56BA78123B34 /* CopyPathFinderExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 47F0FD9BA20FF41EE87E0FCD /* CopyPathFinderExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		0FCE52BE6424C74E6E680D46 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E9C7746EAF2459FA1B19A76 /* SettingsView.swift */; };
+		21C7DD1B6FCE3CDBE5A0232D /* SharedPreferenceStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 110CF600CABBA749F90E5995 /* SharedPreferenceStoreTests.swift */; };
 		26C9598FA90159DA560EBA5E /* CopyPathCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 2442570C5A760DF4DA1E1A69 /* CopyPathCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		29460147258EFC1EC7DB9774 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E3E404C960A9F0D571346AA5 /* Assets.xcassets */; };
 		2974B88D7F87F3B083814674 /* FinderSelectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05770B23570785911851C /* FinderSelectionProvider.swift */; };
+		2E6F1E51B9E7113FCB2FAFF3 /* SharedPreferenceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2447ACCB05B0BE87670EE0 /* SharedPreferenceStore.swift */; };
 		355C537EAA5B8D4449B859BF /* PasteboardClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B603D4DE54BE7761B6B73A90 /* PasteboardClipboardService.swift */; };
 		35A0A330C888AD234596237B /* FinderSelectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE05770B23570785911851C /* FinderSelectionProvider.swift */; };
 		37583DDA2498F8F6D65F45FE /* MonitoredDirectoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6FF2B8C237E82DB5339F351 /* MonitoredDirectoryRegistry.swift */; };
@@ -26,6 +28,7 @@
 		6EFC3D385A39C23D1132ADBE /* ClipboardWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2074C18043892BCDF3F095B /* ClipboardWriting.swift */; };
 		81CCDBFD58407F244A04BE81 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CAD96F551F054FF68ED09B8 /* FinderSync.swift */; };
 		86CDF896BFC14243F2748401 /* FormatPathsUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1CBE0B5A26DE4655621CE3E /* FormatPathsUseCase.swift */; };
+		8A5241DD84D6CF9BB61F9A07 /* FinderExtensionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D5676EA225974486F19201 /* FinderExtensionManager.swift */; };
 		95F9B1DFB4A92D9A23AA923A /* PathFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97BD5FA870865771480CE982 /* PathFormatting.swift */; };
 		9B8F63E370405C1384482923 /* FileSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7989F219AC785B38A79C5E /* FileSelection.swift */; };
 		B273E7457AA4E4D369312C87 /* CopyPathCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2442570C5A760DF4DA1E1A69 /* CopyPathCore.framework */; };
@@ -130,6 +133,7 @@
 /* Begin PBXFileReference section */
 		031228E1C3505FD3C9866130 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		07675B97569AD234DF9A1DE1 /* CopyPathFinderExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CopyPathFinderExtension.entitlements; sourceTree = "<group>"; };
+		110CF600CABBA749F90E5995 /* SharedPreferenceStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreferenceStoreTests.swift; sourceTree = "<group>"; };
 		13631E50FCFA03357C46BD35 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1701249D86DE2DB46A5B7375 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		1D992C96960984E57B727F6F /* AppLifecycleDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleDelegate.swift; sourceTree = "<group>"; };
@@ -137,6 +141,7 @@
 		46D5676EA225974486F19201 /* FinderExtensionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderExtensionManager.swift; sourceTree = "<group>"; };
 		47F0FD9BA20FF41EE87E0FCD /* CopyPathFinderExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CopyPathFinderExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CAD96F551F054FF68ED09B8 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
+		4F2447ACCB05B0BE87670EE0 /* SharedPreferenceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreferenceStore.swift; sourceTree = "<group>"; };
 		5663889CD70861BD3D634543 /* MonitoredDirectoryRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredDirectoryRegistryTests.swift; sourceTree = "<group>"; };
 		5982108F58F3E99E26CC9C67 /* CopyPathUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPathUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		67B6BFCF7CAB3251213D0CE3 /* AppLifecycleDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleDelegateTests.swift; sourceTree = "<group>"; };
@@ -148,6 +153,7 @@
 		8E9C7746EAF2459FA1B19A76 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		8F87B66459F88C9F67C24BD5 /* CopyPathAs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyPathAs.swift; sourceTree = "<group>"; };
 		97BD5FA870865771480CE982 /* PathFormatting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathFormatting.swift; sourceTree = "<group>"; };
+		9992AF2ADDF5E9FCAB62B481 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A229832F6F8272C37862D3C5 /* CopyPathAs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyPathAs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5174D10CD8A9908EA0594DC /* FinderMenuTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderMenuTests.swift; sourceTree = "<group>"; };
 		AE7989F219AC785B38A79C5E /* FileSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileSelection.swift; sourceTree = "<group>"; };
@@ -159,6 +165,7 @@
 		DAE05770B23570785911851C /* FinderSelectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSelectionProvider.swift; sourceTree = "<group>"; };
 		E1CBE0B5A26DE4655621CE3E /* FormatPathsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatPathsUseCase.swift; sourceTree = "<group>"; };
 		E3E404C960A9F0D571346AA5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FF473B0A0C4A792F58E2182A /* CopyPathFinderExtension-Local.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "CopyPathFinderExtension-Local.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -207,6 +214,7 @@
 		1838D59D5BC7722559EF3A4D /* CopyPathFinderExtension */ = {
 			isa = PBXGroup;
 			children = (
+				FF473B0A0C4A792F58E2182A /* CopyPathFinderExtension-Local.entitlements */,
 				07675B97569AD234DF9A1DE1 /* CopyPathFinderExtension.entitlements */,
 				DAE05770B23570785911851C /* FinderSelectionProvider.swift */,
 				4CAD96F551F054FF68ED09B8 /* FinderSync.swift */,
@@ -251,6 +259,7 @@
 		8B0CC3AA01216B2561FFB902 = {
 			isa = PBXGroup;
 			children = (
+				9E9292B8E440CEB715EB39C0 /* Configs */,
 				166E4B77779A2AA3774CA9FD /* CopyPathAs */,
 				D07DE025A2FEFF4733ABDAD8 /* CopyPathCore */,
 				1838D59D5BC7722559EF3A4D /* CopyPathFinderExtension */,
@@ -258,6 +267,14 @@
 				7B7DDF54CDEB609C2F6E2FD3 /* CopyPathUITests */,
 				69C931E10B0433E706F0F2FA /* Products */,
 			);
+			sourceTree = "<group>";
+		};
+		9E9292B8E440CEB715EB39C0 /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				9992AF2ADDF5E9FCAB62B481 /* Config.xcconfig */,
+			);
+			path = Configs;
 			sourceTree = "<group>";
 		};
 		C5A5F6015F837217604F6AAE /* Formatting */ = {
@@ -289,6 +306,7 @@
 				8640037C36329118A7C81564 /* FormatPathsUseCaseTests.swift */,
 				5663889CD70861BD3D634543 /* MonitoredDirectoryRegistryTests.swift */,
 				CAAE28E2047FEDED37F7114E /* PathFormatterTests.swift */,
+				110CF600CABBA749F90E5995 /* SharedPreferenceStoreTests.swift */,
 			);
 			name = CopyPathTests;
 			path = Tests/CopyPathTests;
@@ -299,6 +317,7 @@
 			children = (
 				B2074C18043892BCDF3F095B /* ClipboardWriting.swift */,
 				E1CBE0B5A26DE4655621CE3E /* FormatPathsUseCase.swift */,
+				4F2447ACCB05B0BE87670EE0 /* SharedPreferenceStore.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -414,20 +433,25 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					0C28873BA4C38A3C10DD4E47 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = "$(inherited)";
+						ProvisioningStyle = Automatic;
 					};
 					20E8064B10EF3F0E732AAE03 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = "$(inherited)";
+						ProvisioningStyle = Automatic;
 					};
 					31F68119923D5221D182C91E = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = "$(inherited)";
+						ProvisioningStyle = Automatic;
 						TestTargetID = 0C28873BA4C38A3C10DD4E47;
 					};
 					3612D0CEAAF30D5A16072647 = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = "$(inherited)";
+						ProvisioningStyle = Automatic;
 					};
 					F10BF7D1057B20EEDA72BA9C = {
-						DevelopmentTeam = "";
+						DevelopmentTeam = "$(inherited)";
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -476,6 +500,7 @@
 				E2A1B3527E59119B715E7571 /* PathFormat.swift in Sources */,
 				B7D70738372833DEF47694E3 /* PathFormatter.swift in Sources */,
 				95F9B1DFB4A92D9A23AA923A /* PathFormatting.swift in Sources */,
+				2E6F1E51B9E7113FCB2FAFF3 /* SharedPreferenceStore.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -515,6 +540,7 @@
 			files = (
 				0325BCBC47DAC0FEC3B3728E /* AppLifecycleDelegate.swift in Sources */,
 				67B75F2FFAD62A20B79BB083 /* AppLifecycleDelegateTests.swift in Sources */,
+				8A5241DD84D6CF9BB61F9A07 /* FinderExtensionManager.swift in Sources */,
 				F724B04A1AED3B4FCEEFA513 /* FinderMenuTests.swift in Sources */,
 				2974B88D7F87F3B083814674 /* FinderSelectionProvider.swift in Sources */,
 				81CCDBFD58407F244A04BE81 /* FinderSync.swift in Sources */,
@@ -523,6 +549,7 @@
 				0566832B17C30CCCBABC12C4 /* MonitoredDirectoryRegistryTests.swift in Sources */,
 				DAD9C9BEF8F77A446CCE71EF /* PasteboardClipboardService.swift in Sources */,
 				D3A021FC1666A5190ADE0BED /* PathFormatterTests.swift in Sources */,
+				21C7DD1B6FCE3CDBE5A0232D /* SharedPreferenceStoreTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -561,8 +588,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_ENTITLEMENTS = Sources/CopyPathFinderExtension/CopyPathFinderExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(ENTITLEMENTS_EXTENSION)";
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sources/CopyPathFinderExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -581,8 +609,9 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Sources/CopyPathAs/CopyPathAs.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(ENTITLEMENTS_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sources/CopyPathAs/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -597,6 +626,7 @@
 		};
 		21E7A5D9D0ABF0C92CC17593 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9992AF2ADDF5E9FCAB62B481 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -631,7 +661,6 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -675,7 +704,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;
@@ -713,6 +741,7 @@
 		};
 		9D1C5854013BA778E8C49386 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9992AF2ADDF5E9FCAB62B481 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -747,7 +776,6 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = dwarf;
-				DEVELOPMENT_TEAM = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -814,7 +842,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_ENTITLEMENTS = Sources/CopyPathFinderExtension/CopyPathFinderExtension.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(ENTITLEMENTS_EXTENSION)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sources/CopyPathFinderExtension/Info.plist;
@@ -834,7 +862,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = Sources/CopyPathAs/CopyPathAs.entitlements;
+				CODE_SIGN_ENTITLEMENTS = "$(ENTITLEMENTS_HOST)";
 				COMBINE_HIDPI_IMAGES = YES;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = Sources/CopyPathAs/Info.plist;
@@ -852,7 +880,6 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				APPLICATION_EXTENSION_API_ONLY = YES;
-				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEFINES_MODULE = YES;

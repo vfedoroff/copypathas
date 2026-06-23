@@ -22,4 +22,4 @@ Once enabled, macOS loads the extension whenever Finder starts. The Copy Path As
 
 Download `CopyPathAs.dmg` or `CopyPathAs.zip`, move `CopyPathAs.app` to `/Applications`, and open it once to access Finder extension settings.
 
-The release remains ad-hoc signed rather than notarized. If macOS blocks the first launch, Control-click the app, choose **Open**, and confirm the prompt.
+Maintainer releases are Developer ID signed and notarized locally before upload.

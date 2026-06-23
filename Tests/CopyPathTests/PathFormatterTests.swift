@@ -10,8 +10,13 @@ struct PathFormatterTests {
         #expect(format(.path, "/Users/me/Projects/App/main.go") == "/Users/me/Projects/App/main.go")
     }
 
-    @Test func quotesAndEscapesPath() {
-        #expect(format(.quotedPath, #"/tmp/a "quote"\file"#) == #""/tmp/a \"quote\"\\file""#)
+    @Test func quotesPathWithSingleQuotesForShellSafety() {
+        #expect(format(.quotedPath, #"/tmp/a "quote"\file"#) == #"'/tmp/a "quote"\file'"#)
+    }
+
+    @Test func singleQuotedPathDoesNotLeaveShellExpansionsActive() {
+        #expect(format(.quotedPath, "/tmp/$(touch exploited)`whoami`/$HOME") == #"'/tmp/$(touch exploited)`whoami`/$HOME'"#)
+        #expect(format(.quotedPath, "/tmp/it's here") == #"'/tmp/it'\''s here'"#)
     }
 
     @Test func shellEscapesSpacesAndMetacharacters() {
@@ -65,6 +70,43 @@ struct PathFormatterTests {
         let urls = [URL(fileURLWithPath: "/tmp/a.md"), URL(fileURLWithPath: "/tmp/b.md")]
         #expect(formatter.format(urls, as: .markdownLink) == "[a.md](file:///tmp/a.md)\n[b.md](file:///tmp/b.md)")
     }
+
+    @Test func formatsHomeRelativePath() {
+        let home = NSHomeDirectory()
+        #expect(format(.homeRelative, home + "/Documents/project") == "~/Documents/project")
+        #expect(format(.homeRelative, home) == "~")
+        #expect(format(.homeRelative, "/var/tmp") == "/var/tmp")
+    }
+
+    @Test func formatsJSONString() {
+        #expect(format(.jsonString, #"/tmp/My "Document"\File"#) == #""/tmp/My \"Document\"\\File""#)
+    }
+
+    @Test func formatsRepoRelativePath() throws {
+        let tempDir = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let gitDir = tempDir.appendingPathComponent(".git")
+        let fileInRepo = tempDir.appendingPathComponent("Sources/main.swift")
+
+        try FileManager.default.createDirectory(at: gitDir, withIntermediateDirectories: true)
+        try FileManager.default.createDirectory(at: fileInRepo.deletingLastPathComponent(), withIntermediateDirectories: true)
+        try "test".write(to: fileInRepo, atomically: true, encoding: .utf8)
+
+        defer {
+            try? FileManager.default.removeItem(at: tempDir)
+        }
+
+        let output = formatter.format([fileInRepo], as: .repoRelative)
+        #expect(output == "Sources/main.swift")
+    }
+
+    @Test func formatsRepoRelativePathFallback() {
+        let randomPath = "/tmp/\(UUID().uuidString)/file.txt"
+        let output = format(.repoRelative, randomPath)
+        let home = NSHomeDirectory()
+        let expected = randomPath.replacingOccurrences(of: home, with: "~")
+        #expect(output == expected)
+    }
+
 
     private func format(_ pathFormat: PathFormat, _ path: String) -> String {
         formatter.format([URL(fileURLWithPath: path)], as: pathFormat)

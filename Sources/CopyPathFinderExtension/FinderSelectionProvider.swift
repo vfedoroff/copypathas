@@ -4,8 +4,14 @@ import CopyPathCore
 
 struct FinderSelectionProvider {
     func currentSelection() -> FileSelection? {
-        guard let urls = FIFinderSyncController.default().selectedItemURLs() else { return nil }
-        return FileSelection(urls)
+        let controller = FIFinderSyncController.default()
+        if let urls = controller.selectedItemURLs(), !urls.isEmpty {
+            return FileSelection(urls)
+        }
+        if let targeted = controller.targetedURL() {
+            return FileSelection([targeted])
+        }
+        return nil
     }
 }
 
