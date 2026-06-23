@@ -5,6 +5,8 @@
 DEVELOPMENT_TEAM = YOUR_10_DIGIT_TEAM_ID
 CODE_SIGN_IDENTITY = Apple Development
 CODE_SIGN_STYLE = Automatic
+PROVISIONING_PROFILE_SPECIFIER_HOST =
+PROVISIONING_PROFILE_SPECIFIER_EXTENSION =
 
 // Enable App Sandbox and App Groups for release-ready builds
 ENTITLEMENTS_HOST = Sources/CopyPathAs/CopyPathAs.entitlements

@@ -680,6 +680,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vfedoroff.CopyPathAs;
 				PRODUCT_NAME = CopyPathAs;
+				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_HOST)";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -716,6 +717,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vfedoroff.CopyPathAs.FinderExtension;
 				PRODUCT_NAME = CopyPathFinderExtension;
+				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_EXTENSION)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};
@@ -858,6 +860,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vfedoroff.CopyPathAs;
 				PRODUCT_NAME = CopyPathAs;
+				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_HOST)";
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -894,6 +897,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.vfedoroff.CopyPathAs.FinderExtension;
 				PRODUCT_NAME = CopyPathFinderExtension;
+				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_EXTENSION)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 			};

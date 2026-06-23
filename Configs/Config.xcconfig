@@ -6,6 +6,8 @@
 DEVELOPMENT_TEAM = $(inherited)
 CODE_SIGN_IDENTITY = -
 CODE_SIGN_STYLE = Automatic
+PROVISIONING_PROFILE_SPECIFIER_HOST =
+PROVISIONING_PROFILE_SPECIFIER_EXTENSION =
 
 // Default App Group and Sandbox settings for local contributor builds:
 // In local contributor builds, we build unsandboxed without App Groups.
