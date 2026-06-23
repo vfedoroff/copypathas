@@ -29,3 +29,36 @@ jobs:
             build/CopyPathAs.dmg
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Homebrew Tap Cask
+        env:
+          TAP_TOKEN: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+        run: |
+          # 1. Extract version from tag (e.g., v0.3.0 -> 0.3.0)
+          VERSION=${GITHUB_REF#refs/tags/v}
+          
+          # 2. Calculate the SHA-256 of the built DMG
+          SHA256=$(shasum -a 256 build/CopyPathAs.dmg | awk '{print $1}')
+          
+          # 3. Clone the homebrew-tap repository using the secret token
+          git clone https://x-access-token:${TAP_TOKEN}@github.com/vfedoroff/homebrew-tap.git homebrew-tap
+          
+          # 4. Use inline Python script to safely update version and sha256 in the cask file
+          python3 -c "
+          import re
+          path = 'homebrew-tap/Casks/copypathas.rb'
+          with open(path, 'r') as f:
+              content = f.read()
+          content = re.sub(r'  version \".*?\"', f'  version \"$VERSION\"', content)
+          content = re.sub(r'  sha256 \".*?\"', f'  sha256 \"$SHA256\"', content)
+          with open(path, 'w') as f:
+              f.write(content)
+          "
+          
+          # 5. Commit and push the updated cask
+          cd homebrew-tap
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Casks/copypathas.rb
+          git commit -m "Update copypathas to $VERSION"
+          git push
