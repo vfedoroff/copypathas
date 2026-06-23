@@ -31,6 +31,16 @@ For multiple selections, JSON Array produces one JSON array. Other formats produ
 
 ## Install
 
+### Homebrew (Recommended)
+
+You can install Copy Path As via Homebrew:
+
+```bash
+brew install --cask vfedoroff/tap/copypathas
+```
+
+### Manual
+
 1. Download the latest `.dmg` or `.zip` from [GitHub Releases](https://github.com/vfedoroff/copypathas/releases/latest).
 2. Move `CopyPathAs.app` to `/Applications`.
 3. Open Copy Path As once.
