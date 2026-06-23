@@ -165,7 +165,7 @@ echo "Signing and notarizing DMG..."
 codesign --force --sign "$SIGNING_IDENTITY" --timestamp "$DMG_PATH"
 xcrun notarytool submit "$DMG_PATH" --keychain-profile "$NOTARY_PROFILE" --wait
 xcrun stapler staple "$DMG_PATH"
-spctl -a -vv --type open "$DMG_PATH"
+spctl -a -vv --type open --context context:primary-signature "$DMG_PATH"
 
 echo "Writing checksums..."
 shasum -a 256 "$ZIP_PATH" "$DMG_PATH" > "$SHA_PATH"
