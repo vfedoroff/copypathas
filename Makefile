@@ -5,19 +5,19 @@ all: build
 build:
 	xcodegen generate
 	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
-		build -project CopyPath.xcodeproj -scheme CopyPath \
+		build -project CopyPathAs.xcodeproj -scheme CopyPathAs \
 		-destination 'platform=macOS' -derivedDataPath DerivedData
 
 test:
 	xcodegen generate
 	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
-		test -project CopyPath.xcodeproj -scheme CopyPathUnitTests \
+		test -project CopyPathAs.xcodeproj -scheme CopyPathUnitTests \
 		-destination 'platform=macOS' -derivedDataPath DerivedData
 
 test-ui:
 	xcodegen generate
 	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
-		test -project CopyPath.xcodeproj -scheme CopyPath \
+		test -project CopyPathAs.xcodeproj -scheme CopyPathAs \
 		-destination 'platform=macOS' -derivedDataPath DerivedData
 
 run:
@@ -27,7 +27,7 @@ verify-lifecycle:
 	./scripts/verify_lifecycle.sh
 
 clean:
-	rm -rf DerivedData CopyPath.xcodeproj build
+	rm -rf DerivedData CopyPath.xcodeproj CopyPathAs.xcodeproj build
 
 package:
 	./scripts/package.sh

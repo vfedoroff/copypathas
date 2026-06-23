@@ -124,8 +124,8 @@ xcodegen generate
 
 echo "Archiving signed Release build..."
 xcodebuild archive \
-  -project CopyPath.xcodeproj \
-  -scheme CopyPath \
+  -project CopyPathAs.xcodeproj \
+  -scheme CopyPathAs \
   -archivePath "$ARCHIVE_PATH" \
   -destination 'generic/platform=macOS' \
   -configuration Release \

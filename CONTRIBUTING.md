@@ -22,10 +22,10 @@ The Brewfile installs XcodeGen and SwiftLint.
 
 ```sh
 xcodegen generate
-open CopyPath.xcodeproj
+open CopyPathAs.xcodeproj
 ```
 
-When adding or removing source files, regenerate `CopyPath.xcodeproj` and include the corresponding generated project change in the same commit.
+When adding or removing source files, regenerate `CopyPathAs.xcodeproj` and include the corresponding generated project change in the same commit.
 
 If command-line tools point to the standalone Command Line Tools installation, prefix Xcode commands with:
 
@@ -80,7 +80,7 @@ UI changes also require `make test-ui`. Changes to Finder startup, process owner
 
 ## Signing and Finder Extension Setup
 
-For normal Xcode development, select the same development team for `CopyPathAs`, `CopyPathFinderExtension`, and `CopyPathCore`. Build and run the `CopyPath` scheme once from a stable app location, then enable the extension in **System Settings → General → Login Items & Extensions → Finder Extensions**.
+For normal Xcode development, select the same development team for `CopyPathAs`, `CopyPathFinderExtension`, and `CopyPathCore`. Build and run the `CopyPathAs` scheme once from a stable app location, then enable the extension in **System Settings → General → Login Items & Extensions → Finder Extensions**.
 
 `scripts/build_and_run.sh` builds the app, installs it under `/Applications` by default, registers the embedded extension, and opens the settings app. Set `COPYPATH_INSTALL_DIR` to use a different stable install location. The stable install path matters because Finder extension registration should not point at transient DerivedData products.
 

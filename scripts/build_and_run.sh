@@ -19,8 +19,8 @@ pkill -x CopyPathFinderExtension >/dev/null 2>&1 || true
 cd "$ROOT_DIR"
 xcodegen generate
 xcodebuild build \
-  -project CopyPath.xcodeproj \
-  -scheme CopyPath \
+  -project CopyPathAs.xcodeproj \
+  -scheme CopyPathAs \
   -destination 'platform=macOS' \
   -derivedDataPath "$DERIVED_DATA"
 

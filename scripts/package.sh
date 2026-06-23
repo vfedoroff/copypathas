@@ -17,8 +17,8 @@ xcodegen generate
 echo "📦 Archiving app (Release configuration)..."
 export DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"
 xcodebuild archive \
-  -project CopyPath.xcodeproj \
-  -scheme CopyPath \
+  -project CopyPathAs.xcodeproj \
+  -scheme CopyPathAs \
   -archivePath "$BUILD_DIR/CopyPath.xcarchive" \
   -destination 'generic/platform=macOS' \
   -configuration Release \

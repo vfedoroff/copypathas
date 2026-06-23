@@ -9,30 +9,16 @@
       <BuildActionEntries>
          <BuildActionEntry
             buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "0C28873BA4C38A3C10DD4E47"
-               BuildableName = "CopyPathAs.app"
-               BlueprintName = "CopyPathAs"
-               ReferencedContainer = "container:CopyPath.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
             buildForRunning = "NO"
             buildForProfiling = "NO"
             buildForArchiving = "NO"
             buildForAnalyzing = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3612D0CEAAF30D5A16072647"
+               BlueprintIdentifier = "A1752E53B4194E77F6FEB01D"
                BuildableName = "CopyPathTests.xctest"
                BlueprintName = "CopyPathTests"
-               ReferencedContainer = "container:CopyPath.xcodeproj">
+               ReferencedContainer = "container:CopyPathAs.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,10 +32,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0C28873BA4C38A3C10DD4E47"
-            BuildableName = "CopyPathAs.app"
-            BlueprintName = "CopyPathAs"
-            ReferencedContainer = "container:CopyPath.xcodeproj">
+            BlueprintIdentifier = "A1752E53B4194E77F6FEB01D"
+            BuildableName = "CopyPathTests.xctest"
+            BlueprintName = "CopyPathTests"
+            ReferencedContainer = "container:CopyPathAs.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -58,21 +44,10 @@
             parallelizable = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3612D0CEAAF30D5A16072647"
+               BlueprintIdentifier = "A1752E53B4194E77F6FEB01D"
                BuildableName = "CopyPathTests.xctest"
                BlueprintName = "CopyPathTests"
-               ReferencedContainer = "container:CopyPath.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO"
-            parallelizable = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "31F68119923D5221D182C91E"
-               BuildableName = "CopyPathUITests.xctest"
-               BlueprintName = "CopyPathUITests"
-               ReferencedContainer = "container:CopyPath.xcodeproj">
+               ReferencedContainer = "container:CopyPathAs.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -89,16 +64,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0C28873BA4C38A3C10DD4E47"
-            BuildableName = "CopyPathAs.app"
-            BlueprintName = "CopyPathAs"
-            ReferencedContainer = "container:CopyPath.xcodeproj">
+            BlueprintIdentifier = "A1752E53B4194E77F6FEB01D"
+            BuildableName = "CopyPathTests.xctest"
+            BlueprintName = "CopyPathTests"
+            ReferencedContainer = "container:CopyPathAs.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -106,16 +80,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "0C28873BA4C38A3C10DD4E47"
-            BuildableName = "CopyPathAs.app"
-            BlueprintName = "CopyPathAs"
-            ReferencedContainer = "container:CopyPath.xcodeproj">
+            BlueprintIdentifier = "A1752E53B4194E77F6FEB01D"
+            BuildableName = "CopyPathTests.xctest"
+            BlueprintName = "CopyPathTests"
+            ReferencedContainer = "container:CopyPathAs.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
