@@ -9,3 +9,4 @@ xcuserdata/
 
 # Local signing configuration overrides
 Configs/Config.local.xcconfig
+.envrc
