@@ -6,7 +6,7 @@ struct CopyPathAs: App {
 
     var body: some Scene {
         WindowGroup {
-            SettingsView()
+            SettingsView(demoState: .current)
         }
         .windowResizability(.contentSize)
     }

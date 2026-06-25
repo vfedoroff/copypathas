@@ -28,6 +28,12 @@ public final class SharedPreferenceStore: Sendable {
 
     // Check if App Group is available
     public var hasAppGroup: Bool {
+        // Only use App Group if the process is sandboxed.
+        // Unsandboxed processes (like local contributor builds of the host app)
+        // should fall back to the plist reader to stay in sync with the extension.
+        guard ProcessInfo.processInfo.environment["APP_SANDBOX_CONTAINER_ID"] != nil else {
+            return false
+        }
         return FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupID) != nil
     }
 

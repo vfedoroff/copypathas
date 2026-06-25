@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		08AA58CE6313D5E490B7E368 /* AppDemoState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06B6E014F2EC8C4EB56066C /* AppDemoState.swift */; };
 		2075D2C36099767444F24A99 /* PathFormatterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C3BB74E7F50E2B548C897F1 /* PathFormatterTests.swift */; };
 		2B0BBD4418E41E18FD4C437C /* PasteboardClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B0262EE197AD7405DD3048 /* PasteboardClipboardService.swift */; };
 		35CB02C599372D5954642439 /* FormatPathsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9408FB324425B4D4A3E4A607 /* FormatPathsUseCaseTests.swift */; };
@@ -38,6 +39,7 @@
 		CFB5D8C3308D756707BBDC01 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC22B3D4914795163AAFB737 /* FinderSync.swift */; };
 		D50FAC031CEA941F8D8D7635 /* CopyPathUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DCA981387F74423B92BA47 /* CopyPathUITests.swift */; };
 		D62C6A26A437DD07A000E0E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 194C1572574A2F8F92C3A59C /* Assets.xcassets */; };
+		DA84291EB5A07CEB5EEA91B3 /* AppDemoState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06B6E014F2EC8C4EB56066C /* AppDemoState.swift */; };
 		EA8958CF4DBB58D06D7DB782 /* CopyPathCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 544E1FE6793CD0A71D678F04 /* CopyPathCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F00CD5651F4E267A83252E14 /* CopyPathCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 544E1FE6793CD0A71D678F04 /* CopyPathCore.framework */; };
 		F78E4A38927338608F754B7C /* AppLifecycleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD325775560B095FFE23BD8 /* AppLifecycleDelegate.swift */; };
@@ -158,6 +160,7 @@
 		9B6C371246FD7A6E74A0B168 /* SharedPreferenceStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreferenceStore.swift; sourceTree = "<group>"; };
 		9C3BB74E7F50E2B548C897F1 /* PathFormatterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathFormatterTests.swift; sourceTree = "<group>"; };
 		AC22B3D4914795163AAFB737 /* FinderSync.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSync.swift; sourceTree = "<group>"; };
+		B06B6E014F2EC8C4EB56066C /* AppDemoState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDemoState.swift; sourceTree = "<group>"; };
 		B3B0262EE197AD7405DD3048 /* PasteboardClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardClipboardService.swift; sourceTree = "<group>"; };
 		B6D182DFBD892278BBF80BD0 /* CopyPathUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPathUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD325775560B095FFE23BD8 /* AppLifecycleDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleDelegate.swift; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 		75644B9AC93C3C5A596F66B1 /* CopyPathAs */ = {
 			isa = PBXGroup;
 			children = (
+				B06B6E014F2EC8C4EB56066C /* AppDemoState.swift */,
 				BCD325775560B095FFE23BD8 /* AppLifecycleDelegate.swift */,
 				194C1572574A2F8F92C3A59C /* Assets.xcassets */,
 				DA58DBED03DE789D4F32A635 /* CopyPathAs.entitlements */,
@@ -505,6 +509,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DA84291EB5A07CEB5EEA91B3 /* AppDemoState.swift in Sources */,
 				7A8693B08CF3C917B8199D84 /* AppLifecycleDelegate.swift in Sources */,
 				4312BF1A75252123F00B6C52 /* CopyPathAs.swift in Sources */,
 				BDDD1818D3A1CEEEF6799EF5 /* FinderExtensionManager.swift in Sources */,
@@ -516,6 +521,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				08AA58CE6313D5E490B7E368 /* AppDemoState.swift in Sources */,
 				F78E4A38927338608F754B7C /* AppLifecycleDelegate.swift in Sources */,
 				A72B02636E65E4E2750C1C35 /* AppLifecycleDelegateTests.swift in Sources */,
 				409FEDDFBD209D83355D0D50 /* FinderExtensionManager.swift in Sources */,

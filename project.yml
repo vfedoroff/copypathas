@@ -89,6 +89,7 @@ targets:
     platform: macOS
     sources:
       - Tests/CopyPathTests
+      - Sources/CopyPathAs/AppDemoState.swift
       - Sources/CopyPathAs/AppLifecycleDelegate.swift
       - Sources/CopyPathAs/FinderExtensionManager.swift
       - path: Sources/CopyPathFinderExtension

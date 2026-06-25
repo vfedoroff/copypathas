@@ -8,7 +8,55 @@ final class CopyPathUITests: XCTestCase {
 
         XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 5))
         XCTAssertTrue(
-            app.buttons["Open Finder Extension Settings"].waitForExistence(timeout: 2)
+            app.buttons["Open Settings"].waitForExistence(timeout: 2)
+                || app.buttons["Extension Settings"].waitForExistence(timeout: 2)
         )
+    }
+
+    @MainActor
+    func testDemoFormatsShowsFormatsTabAndSamplePath() {
+        let app = launchApp(demoState: "formats")
+
+        XCTAssertTrue(app.staticTexts["All set! You can safely close this window."].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Supported formats"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Try a sample path"].waitForExistence(timeout: 2))
+        let testPathValue = app.textFields.firstMatch.value as? String
+        XCTAssertTrue(testPathValue?.contains("Sample Project") == true)
+    }
+
+    @MainActor
+    func testDemoOverviewShowsExtensionEnabledBanner() {
+        let app = launchApp(demoState: "overview")
+
+        XCTAssertTrue(app.staticTexts["All set! You can safely close this window."].waitForExistence(timeout: 5))
+        XCTAssertFalse(app.staticTexts["Extension Not Enabled"].exists)
+    }
+
+    @MainActor
+    func testDemoSetupShowsExtensionDisabledBanner() {
+        let app = launchApp(demoState: "setup")
+
+        XCTAssertTrue(app.staticTexts["Extension Not Enabled"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.buttons["Open Settings"].waitForExistence(timeout: 2))
+    }
+
+    @MainActor
+    func testDemoCopiedShowsStableToast() {
+        let app = launchApp(demoState: "copied")
+
+        XCTAssertTrue(app.staticTexts["All set! You can safely close this window."].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["Supported formats"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.staticTexts["copied-toast-title"].waitForExistence(timeout: 2))
+        let toastDetail = app.staticTexts["copied-toast-detail"]
+        XCTAssertTrue(toastDetail.waitForExistence(timeout: 2))
+    }
+
+    @MainActor
+    private func launchApp(demoState: String) -> XCUIApplication {
+        let app = XCUIApplication()
+        app.launchArguments = ["--demo", demoState]
+        app.launch()
+        XCTAssertTrue(app.windows.firstMatch.waitForExistence(timeout: 5))
+        return app
     }
 }

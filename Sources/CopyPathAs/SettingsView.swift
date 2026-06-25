@@ -4,6 +4,7 @@ import SwiftUI
 // swiftlint:disable type_body_length
 struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
+    private let demoState: AppDemoState?
     @State private var extensionEnabled = FinderExtensionManager.isEnabled
     @State private var selectedFormat: PathFormat = .path
     @State private var testPath = "/Users/appleseed/Projects/app/sources/main.swift"
@@ -23,6 +24,20 @@ struct SettingsView: View {
     enum Tab {
         case overview
         case preview
+    }
+
+    init(demoState: AppDemoState? = nil) {
+        self.demoState = demoState
+        _extensionEnabled = State(initialValue: demoState?.initialExtensionEnabled ?? FinderExtensionManager.isEnabled)
+        _selectedFormat = State(initialValue: demoState?.initialFormat ?? .path)
+        _testPath = State(
+            initialValue: demoState?.initialTestPath
+                ?? "/Users/appleseed/Projects/app/sources/main.swift"
+        )
+        _currentTab = State(initialValue: demoState?.initialTab ?? .overview)
+        _showToast = State(initialValue: demoState == .copied)
+        _toastPath = State(initialValue: demoState == .copied ? "README.md" : "")
+        _toastFormat = State(initialValue: demoState == .copied ? PathFormat.markdownLink.displayName : "")
     }
 
     var body: some View {
@@ -67,9 +82,11 @@ struct SettingsView: View {
         }
         .frame(width: 860, height: 830)
         .onReceive(timer) { _ in
+            guard demoState == nil else { return }
             checkForSharedCopyEvents()
         }
         .onChange(of: scenePhase) { _, phase in
+            guard demoState == nil else { return }
             if phase == .active {
                 extensionEnabled = FinderExtensionManager.isEnabled
                 checkForSharedCopyEvents()
@@ -591,12 +608,14 @@ struct SettingsView: View {
                         .font(.subheadline)
                         .fontWeight(.bold)
                         .foregroundStyle(.white)
+                        .accessibilityIdentifier("copied-toast-title")
 
                     Text("\(toastFormat): \(toastPath)")
                         .font(.caption2)
                         .foregroundStyle(.white.opacity(0.8))
                         .lineLimit(1)
                         .truncationMode(.middle)
+                        .accessibilityIdentifier("copied-toast-detail")
                 }
                 Spacer()
             }
@@ -687,6 +706,38 @@ struct SettingsView: View {
                     showToast = false
                 }
             }
+        }
+    }
+}
+
+private extension AppDemoState {
+    var initialExtensionEnabled: Bool {
+        switch self {
+        case .setup: false
+        case .overview, .formats, .copied: true
+        }
+    }
+
+    var initialFormat: PathFormat {
+        switch self {
+        case .overview, .setup: .path
+        case .formats, .copied: .markdownLink
+        }
+    }
+
+    var initialTab: SettingsView.Tab {
+        switch self {
+        case .overview, .setup: .overview
+        case .formats, .copied: .preview
+        }
+    }
+
+    var initialTestPath: String {
+        switch self {
+        case .overview, .setup:
+            "/Users/appleseed/Projects/app/sources/main.swift"
+        case .formats, .copied:
+            "/Users/appleseed/Projects/Sample Project/README.md"
         }
     }
 }
