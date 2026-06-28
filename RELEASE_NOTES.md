@@ -1,13 +1,13 @@
-# Copy Path As 0.3.0
+# Copy Path As 0.4.0
 
-This release prepares Copy Path As for broader open-source distribution and improves install guidance.
+This release introduces customizable copy feedback options, UI refinements, a demo mode, and robustness improvements for developers.
 
 ## Highlights
 
-- Adds Homebrew Cask installation instructions.
-- Adds CI automation for updating the Homebrew Cask when a GitHub release is published.
-- Refreshes README visuals with the Finder workflow and generated promotional assets.
-- Prepares repository metadata and documentation for public OSS releases.
+- **Customizable Copy Feedback**: Configure how you want to be notified when a path is successfully copied. Choose to play a subtle audio tone ("Glass"), trigger a haptic pulse, show a standard macOS user notification, or copy silently.
+- **Settings UI Polish**: Updates the Settings application with a clean, tabbed layout, refined status indicators, build metadata display, and improved scrolling behaviour.
+- **Onboarding Demo Mode**: Introduces an interactive Demo Mode allowing command-line preview parameters (`--demo overview`, `--demo formats`, `--demo setup`) to run the UI in specific states without side-effects.
+- **Contributor Sandbox Robustness**: Gracefully falls back to standard User Preferences when sandboxed App Groups are not available, fixing local preferences sync for local development builds.
 
 ## Requirements
 

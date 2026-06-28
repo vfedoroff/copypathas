@@ -107,7 +107,7 @@ make release-local
 Or pass a tag explicitly:
 
 ```sh
-COPYPATH_NOTARY_PROFILE=copypath-notary ./scripts/release_local_signed.sh --tag v0.3.0 --publish
+COPYPATH_NOTARY_PROFILE=copypath-notary ./scripts/release_local_signed.sh --tag v0.4.0 --publish
 ```
 
 The local release script builds the Release archive, Developer ID signs it, notarizes and staples the app, creates ZIP and DMG artifacts, notarizes and staples the DMG, writes SHA-256 checksums, and uploads the release assets with `gh`. The GitHub release follow-up workflow updates the Homebrew tap after the signed DMG is published.

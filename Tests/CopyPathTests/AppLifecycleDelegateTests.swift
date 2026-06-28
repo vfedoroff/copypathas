@@ -27,16 +27,16 @@ struct AppLifecycleDelegateTests {
 
     @Test("formats version build and source hash for display")
     func formatsBuildIdentity() {
-        let identity = BuildIdentity(version: "0.3.0", build: "3", sourceHash: "abc1234")
+        let identity = BuildIdentity(version: "0.4.0", build: "4", sourceHash: "abc1234")
 
-        #expect(identity.displayString == "Version 0.3.0 · Source abc1234")
+        #expect(identity.displayString == "Version 0.4.0 · Source abc1234")
     }
 
     @Test("omits source hash when bundle metadata is missing")
     func omitsMissingSourceHash() {
-        let identity = BuildIdentity(version: "0.3.0", build: "3", sourceHash: nil)
+        let identity = BuildIdentity(version: "0.4.0", build: "4", sourceHash: nil)
 
-        #expect(identity.displayString == "Version 0.3.0")
+        #expect(identity.displayString == "Version 0.4.0")
     }
 
     @Test("activates an already running app instance")
