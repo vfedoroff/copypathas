@@ -10,6 +10,7 @@ APP_PATH="$EXPORT_DIR/$APP_NAME.app"
 ZIP_PATH="$BUILD_DIR/$APP_NAME.zip"
 DMG_PATH="$BUILD_DIR/$APP_NAME.dmg"
 SHA_PATH="$BUILD_DIR/SHA256SUMS.txt"
+SOURCE_HASH="$("$ROOT_DIR/scripts/source_hash.sh")"
 
 SIGNING_IDENTITY="${COPYPATH_SIGNING_IDENTITY:-Developer ID Application}"
 NOTARY_PROFILE="${COPYPATH_NOTARY_PROFILE:-}"
@@ -129,11 +130,13 @@ xcodebuild archive \
   -archivePath "$ARCHIVE_PATH" \
   -destination 'generic/platform=macOS' \
   -configuration Release \
+  COPY_PATH_SOURCE_HASH="$SOURCE_HASH" \
   CODE_SIGN_IDENTITY="$SIGNING_IDENTITY" \
   CODE_SIGN_STYLE=Manual
 
 echo "Extracting app bundle..."
 cp -R "$ARCHIVE_PATH/Products/Applications/$APP_NAME.app" "$APP_PATH"
+"$ROOT_DIR/scripts/cleanup_duplicate_registrations.sh" "$APP_PATH"
 
 echo "Validating app signature..."
 codesign --verify --deep --strict --verbose=2 "$APP_PATH"

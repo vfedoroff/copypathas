@@ -5,6 +5,7 @@ APP_NAME="CopyPathAs"
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 BUILD_DIR="$ROOT_DIR/build"
 EXPORT_DIR="$BUILD_DIR/export"
+SOURCE_HASH="$("$ROOT_DIR/scripts/source_hash.sh")"
 
 echo "🧹 Cleaning previous builds..."
 rm -rf "$BUILD_DIR"
@@ -22,11 +23,13 @@ xcodebuild archive \
   -archivePath "$BUILD_DIR/CopyPath.xcarchive" \
   -destination 'generic/platform=macOS' \
   -configuration Release \
+  COPY_PATH_SOURCE_HASH="$SOURCE_HASH" \
   CODE_SIGNING_ALLOWED=YES \
   CODE_SIGN_IDENTITY="-" # Ad-hoc sign for local packaging checks
 
 echo "📂 Extracting App bundle..."
 cp -R "$BUILD_DIR/CopyPath.xcarchive/Products/Applications/CopyPathAs.app" "$EXPORT_DIR/CopyPathAs.app"
+"$ROOT_DIR/scripts/cleanup_duplicate_registrations.sh" "$EXPORT_DIR/CopyPathAs.app"
 
 echo "🤐 Creating ZIP archive..."
 cd "$EXPORT_DIR"

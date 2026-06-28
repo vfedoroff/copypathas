@@ -3,7 +3,24 @@ import CopyPathCore
 
 final class AppLifecycleDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
+        if !Self.shouldBypassDuplicateLaunchGuard(environment: ProcessInfo.processInfo.environment) {
+            let instanceCoordinator = AppInstanceCoordinator(
+                bundleIdentifier: Bundle.main.bundleIdentifier ?? "com.vfedoroff.CopyPathAs",
+                currentProcessIdentifier: ProcessInfo.processInfo.processIdentifier,
+                runningApplicationProvider: AppKitRunningApplicationProvider()
+            )
+
+            if instanceCoordinator.activateExistingInstanceIfNeeded() {
+                NSApp.terminate(nil)
+                return
+            }
+        }
+
         NSApp.servicesProvider = self
+    }
+
+    static func shouldBypassDuplicateLaunchGuard(environment: [String: String]) -> Bool {
+        environment["XCTestConfigurationFilePath"] != nil
     }
 
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {

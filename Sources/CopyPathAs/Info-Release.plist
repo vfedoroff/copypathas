@@ -23,7 +23,7 @@
 	<key>LSMinimumSystemVersion</key>
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>LSMultipleInstancesProhibited</key>
-	<false/>
+	<true/>
 	<key>CopyPathSourceHash</key>
 	<string>$(COPY_PATH_SOURCE_HASH)</string>
 	<key>NSHumanReadableCopyright</key>

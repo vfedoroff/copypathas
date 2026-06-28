@@ -12,6 +12,7 @@
 		2B0BBD4418E41E18FD4C437C /* PasteboardClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B0262EE197AD7405DD3048 /* PasteboardClipboardService.swift */; };
 		35CB02C599372D5954642439 /* FormatPathsUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9408FB324425B4D4A3E4A607 /* FormatPathsUseCaseTests.swift */; };
 		3A1CF25DA4284F3F678C9887 /* CopyPathCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 544E1FE6793CD0A71D678F04 /* CopyPathCore.framework */; };
+		3DD29C5C7E45557C387A9A89 /* AppInstallationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A07C72D5075FCD70AB1569 /* AppInstallationStatus.swift */; };
 		403D78542B6D55A1492E9024 /* PathFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 787ED2DC07866D1502CAC506 /* PathFormatter.swift */; };
 		4081F7B8B3D93F456474C65B /* PathFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31CEEDEC374AF3244343069D /* PathFormat.swift */; };
 		409FEDDFBD209D83355D0D50 /* FinderExtensionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D65F1857A3B40370065C5C /* FinderExtensionManager.swift */; };
@@ -22,29 +23,36 @@
 		5714BD0F50DCA61763CCE7EF /* ClipboardWriting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A93B7C2A1F4A35477B7AB7B /* ClipboardWriting.swift */; };
 		57A16A8043F9A11F931918BC /* MonitoredDirectoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69951432E0E72A2BC20CC828 /* MonitoredDirectoryRegistry.swift */; };
 		5AEF91590DE971342166C856 /* FileSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 979C13A51DE70FB26CE3FF52 /* FileSelection.swift */; };
+		5CBC598C16DAFDA5C13C6BB3 /* AppInstallationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80A07C72D5075FCD70AB1569 /* AppInstallationStatus.swift */; };
 		7A8693B08CF3C917B8199D84 /* AppLifecycleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD325775560B095FFE23BD8 /* AppLifecycleDelegate.swift */; };
+		836A2F0A26E38E1DB076C33E /* AppDoctorReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BCA07584D067B0D972A5C7 /* AppDoctorReport.swift */; };
 		8E39DF1CA4B54E040AD1FA93 /* FinderSelectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB6A7DFD2B37A3DC67B77FE /* FinderSelectionProvider.swift */; };
 		98A11F4AE0051204532D9888 /* PathFormatting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DB9D19A15811C2F9AAF8085 /* PathFormatting.swift */; };
 		99157DCB20338E564928AFB4 /* PasteboardClipboardService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B3B0262EE197AD7405DD3048 /* PasteboardClipboardService.swift */; };
 		9944BC1BFDB1CE7F9BE5662C /* MonitoredDirectoryRegistryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 664EE6B2C962B4E86B6C81D9 /* MonitoredDirectoryRegistryTests.swift */; };
 		A203D55030D60F1F49EA4AAA /* CopyPathCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 544E1FE6793CD0A71D678F04 /* CopyPathCore.framework */; };
 		A321D76D25A7C5684D77F70D /* CopyPathCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 544E1FE6793CD0A71D678F04 /* CopyPathCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		A470FEF0438D9DB0C9824F0E /* BuildIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97899C9148273895D25B185 /* BuildIdentity.swift */; };
 		A72B02636E65E4E2750C1C35 /* AppLifecycleDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1F183F5FB4A41762C16E28B /* AppLifecycleDelegateTests.swift */; };
+		B0F4D8DF7BC9F7A5E1863711 /* AppInstanceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672BD8035078CE806BC93786 /* AppInstanceCoordinator.swift */; };
 		B290CA7E4B6EE53E9E7775BF /* CopyPathFinderExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 70A4B344F54D2A6E35133C4B /* CopyPathFinderExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		B2A97BE72F843719B8843F6A /* SharedPreferenceStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B6C371246FD7A6E74A0B168 /* SharedPreferenceStore.swift */; };
 		B51021F441040B001D93DC29 /* SharedPreferenceStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C3AFE4202B7D7C9CFF66FDE /* SharedPreferenceStoreTests.swift */; };
 		BC51CF658E57EF1A029935CA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ACB997BC16B0EF45B2AABA9 /* SettingsView.swift */; };
 		BDDD1818D3A1CEEEF6799EF5 /* FinderExtensionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D65F1857A3B40370065C5C /* FinderExtensionManager.swift */; };
 		C603EC8EC3C8DD4724EBF248 /* FinderMenuTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 419D222D698F02567F52D22A /* FinderMenuTests.swift */; };
+		C82B3BE575C5B6BA7412A321 /* AppDoctorReport.swift in Sources */ = {isa = PBXBuildFile; fileRef = D7BCA07584D067B0D972A5C7 /* AppDoctorReport.swift */; };
 		CFB5D8C3308D756707BBDC01 /* FinderSync.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC22B3D4914795163AAFB737 /* FinderSync.swift */; };
 		D50FAC031CEA941F8D8D7635 /* CopyPathUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5DCA981387F74423B92BA47 /* CopyPathUITests.swift */; };
 		D62C6A26A437DD07A000E0E8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 194C1572574A2F8F92C3A59C /* Assets.xcassets */; };
 		DA84291EB5A07CEB5EEA91B3 /* AppDemoState.swift in Sources */ = {isa = PBXBuildFile; fileRef = B06B6E014F2EC8C4EB56066C /* AppDemoState.swift */; };
+		E266AE0B03F5EAA2A59B5541 /* BuildIdentity.swift in Sources */ = {isa = PBXBuildFile; fileRef = D97899C9148273895D25B185 /* BuildIdentity.swift */; };
 		EA8958CF4DBB58D06D7DB782 /* CopyPathCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 544E1FE6793CD0A71D678F04 /* CopyPathCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		F00CD5651F4E267A83252E14 /* CopyPathCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 544E1FE6793CD0A71D678F04 /* CopyPathCore.framework */; };
 		F78E4A38927338608F754B7C /* AppLifecycleDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BCD325775560B095FFE23BD8 /* AppLifecycleDelegate.swift */; };
 		F7E7EB59A2A987612695F7C2 /* MonitoredDirectoryRegistry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69951432E0E72A2BC20CC828 /* MonitoredDirectoryRegistry.swift */; };
 		F92CAB514FF0407E1C237ACB /* FinderSelectionProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCB6A7DFD2B37A3DC67B77FE /* FinderSelectionProvider.swift */; };
+		FFE2730D1CEEC5FBF06556DA /* AppInstanceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 672BD8035078CE806BC93786 /* AppInstanceCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -144,12 +152,14 @@
 		5B772FB367431CDEFAA04562 /* CopyPathAs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CopyPathAs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5C3AFE4202B7D7C9CFF66FDE /* SharedPreferenceStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPreferenceStoreTests.swift; sourceTree = "<group>"; };
 		664EE6B2C962B4E86B6C81D9 /* MonitoredDirectoryRegistryTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredDirectoryRegistryTests.swift; sourceTree = "<group>"; };
+		672BD8035078CE806BC93786 /* AppInstanceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstanceCoordinator.swift; sourceTree = "<group>"; };
 		68619199C8ECE0842796B858 /* FormatPathsUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormatPathsUseCase.swift; sourceTree = "<group>"; };
 		69951432E0E72A2BC20CC828 /* MonitoredDirectoryRegistry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitoredDirectoryRegistry.swift; sourceTree = "<group>"; };
 		6ACB997BC16B0EF45B2AABA9 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		70A4B344F54D2A6E35133C4B /* CopyPathFinderExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = CopyPathFinderExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		787ED2DC07866D1502CAC506 /* PathFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathFormatter.swift; sourceTree = "<group>"; };
 		7FC7126E9A3719FF9F525248 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		80A07C72D5075FCD70AB1569 /* AppInstallationStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInstallationStatus.swift; sourceTree = "<group>"; };
 		876230DBE5D0FC35886AA642 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		8C309AE062C1F448233E80DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		92D65F1857A3B40370065C5C /* FinderExtensionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderExtensionManager.swift; sourceTree = "<group>"; };
@@ -164,10 +174,13 @@
 		B3B0262EE197AD7405DD3048 /* PasteboardClipboardService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasteboardClipboardService.swift; sourceTree = "<group>"; };
 		B6D182DFBD892278BBF80BD0 /* CopyPathUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPathUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		BCD325775560B095FFE23BD8 /* AppLifecycleDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleDelegate.swift; sourceTree = "<group>"; };
+		D7BCA07584D067B0D972A5C7 /* AppDoctorReport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDoctorReport.swift; sourceTree = "<group>"; };
+		D97899C9148273895D25B185 /* BuildIdentity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BuildIdentity.swift; sourceTree = "<group>"; };
 		DA58DBED03DE789D4F32A635 /* CopyPathAs.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = CopyPathAs.entitlements; sourceTree = "<group>"; };
 		DCB6A7DFD2B37A3DC67B77FE /* FinderSelectionProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FinderSelectionProvider.swift; sourceTree = "<group>"; };
 		DE6A5700261370A3EA3481A2 /* CopyPathTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CopyPathTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E1F183F5FB4A41762C16E28B /* AppLifecycleDelegateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLifecycleDelegateTests.swift; sourceTree = "<group>"; };
+		EC628E607ECD974049FDF8B1 /* Info-Release.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "Info-Release.plist"; sourceTree = "<group>"; };
 		F5DCA981387F74423B92BA47 /* CopyPathUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyPathUITests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -259,11 +272,16 @@
 			isa = PBXGroup;
 			children = (
 				B06B6E014F2EC8C4EB56066C /* AppDemoState.swift */,
+				D7BCA07584D067B0D972A5C7 /* AppDoctorReport.swift */,
+				80A07C72D5075FCD70AB1569 /* AppInstallationStatus.swift */,
+				672BD8035078CE806BC93786 /* AppInstanceCoordinator.swift */,
 				BCD325775560B095FFE23BD8 /* AppLifecycleDelegate.swift */,
 				194C1572574A2F8F92C3A59C /* Assets.xcassets */,
+				D97899C9148273895D25B185 /* BuildIdentity.swift */,
 				DA58DBED03DE789D4F32A635 /* CopyPathAs.entitlements */,
 				958C51B62F72BD8265001416 /* CopyPathAs.swift */,
 				92D65F1857A3B40370065C5C /* FinderExtensionManager.swift */,
+				EC628E607ECD974049FDF8B1 /* Info-Release.plist */,
 				8C309AE062C1F448233E80DD /* Info.plist */,
 				6ACB997BC16B0EF45B2AABA9 /* SettingsView.swift */,
 			);
@@ -510,7 +528,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				DA84291EB5A07CEB5EEA91B3 /* AppDemoState.swift in Sources */,
+				C82B3BE575C5B6BA7412A321 /* AppDoctorReport.swift in Sources */,
+				3DD29C5C7E45557C387A9A89 /* AppInstallationStatus.swift in Sources */,
+				B0F4D8DF7BC9F7A5E1863711 /* AppInstanceCoordinator.swift in Sources */,
 				7A8693B08CF3C917B8199D84 /* AppLifecycleDelegate.swift in Sources */,
+				E266AE0B03F5EAA2A59B5541 /* BuildIdentity.swift in Sources */,
 				4312BF1A75252123F00B6C52 /* CopyPathAs.swift in Sources */,
 				BDDD1818D3A1CEEEF6799EF5 /* FinderExtensionManager.swift in Sources */,
 				BC51CF658E57EF1A029935CA /* SettingsView.swift in Sources */,
@@ -522,8 +544,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				08AA58CE6313D5E490B7E368 /* AppDemoState.swift in Sources */,
+				836A2F0A26E38E1DB076C33E /* AppDoctorReport.swift in Sources */,
+				5CBC598C16DAFDA5C13C6BB3 /* AppInstallationStatus.swift in Sources */,
+				FFE2730D1CEEC5FBF06556DA /* AppInstanceCoordinator.swift in Sources */,
 				F78E4A38927338608F754B7C /* AppLifecycleDelegate.swift in Sources */,
 				A72B02636E65E4E2750C1C35 /* AppLifecycleDelegateTests.swift in Sources */,
+				A470FEF0438D9DB0C9824F0E /* BuildIdentity.swift in Sources */,
 				409FEDDFBD209D83355D0D50 /* FinderExtensionManager.swift in Sources */,
 				C603EC8EC3C8DD4724EBF248 /* FinderMenuTests.swift in Sources */,
 				F92CAB514FF0407E1C237ACB /* FinderSelectionProvider.swift in Sources */,
@@ -859,7 +885,7 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = Sources/CopyPathAs/Info.plist;
+				INFOPLIST_FILE = "Sources/CopyPathAs/Info-Release.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

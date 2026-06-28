@@ -6,19 +6,22 @@ build:
 	xcodegen generate
 	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
 		build -project CopyPathAs.xcodeproj -scheme CopyPathAs \
-		-destination 'platform=macOS' -derivedDataPath DerivedData
+		-destination 'platform=macOS' -derivedDataPath DerivedData \
+		COPY_PATH_SOURCE_HASH="$$(./scripts/source_hash.sh)"
 
 test:
 	xcodegen generate
 	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
 		test -project CopyPathAs.xcodeproj -scheme CopyPathUnitTests \
-		-destination 'platform=macOS' -derivedDataPath DerivedData
+		-destination 'platform=macOS' -derivedDataPath DerivedData \
+		COPY_PATH_SOURCE_HASH="$$(./scripts/source_hash.sh)"
 
 test-ui:
 	xcodegen generate
 	DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild \
 		test -project CopyPathAs.xcodeproj -scheme CopyPathAs \
-		-destination 'platform=macOS' -derivedDataPath DerivedData
+		-destination 'platform=macOS' -derivedDataPath DerivedData \
+		COPY_PATH_SOURCE_HASH="$$(./scripts/source_hash.sh)"
 
 run:
 	./scripts/build_and_run.sh run

@@ -39,6 +39,7 @@ final class FinderSync: FIFinderSync {
 
     private func updateHeartbeat() {
         SharedPreferenceStore.shared.set(Date().timeIntervalSince1970, forKey: "extensionLastActiveTimestamp")
+        SharedPreferenceStore.shared.set(Bundle.main.bundleURL.path, forKey: "extensionBundlePath")
     }
 
     private func makeItem(for format: PathFormat) -> NSMenuItem {

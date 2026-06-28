@@ -12,6 +12,7 @@ BUILT_EXTENSION="$BUILT_APP/Contents/PlugIns/CopyPathFinderExtension.appex"
 INSTALL_DIR="${COPYPATH_INSTALL_DIR:-/Applications}"
 APP_BUNDLE="$INSTALL_DIR/CopyPathAs.app"
 APP_BINARY="$APP_BUNDLE/Contents/MacOS/CopyPathAs"
+SOURCE_HASH="$("$ROOT_DIR/scripts/source_hash.sh")"
 export DEVELOPER_DIR="/Applications/Xcode.app/Contents/Developer"
 
 pkill -x "$APP_NAME" >/dev/null 2>&1 || true
@@ -22,21 +23,14 @@ xcodebuild build \
   -project CopyPathAs.xcodeproj \
   -scheme CopyPathAs \
   -destination 'platform=macOS' \
-  -derivedDataPath "$DERIVED_DATA"
+  -derivedDataPath "$DERIVED_DATA" \
+  COPY_PATH_SOURCE_HASH="$SOURCE_HASH"
 
 # Finder extensions need a stable containing-app location to appear reliably
 # in System Settings. Do not register the transient DerivedData copy.
 mkdir -p "$INSTALL_DIR"
 
-echo "🧹 Clearing duplicate registrations..."
-set +o pipefail
-/System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -dump 2>/dev/null | grep -i "path:" | grep -i "CopyPath" | sed -E 's/^path:[[:space:]]+//; s/[[:space:]]+\(0x[0-9a-fA-F]+\)//' | while read -r path; do
-  if [ -n "$path" ] && [ "$path" != "$APP_BUNDLE" ] && [ "$path" != "$APP_BUNDLE/Contents/PlugIns/CopyPathFinderExtension.appex" ]; then
-    /System/Library/Frameworks/CoreServices.framework/Versions/Current/Frameworks/LaunchServices.framework/Versions/Current/Support/lsregister -u "$path" 2>/dev/null || true
-  fi
-done || true
-set -o pipefail
-
+"$ROOT_DIR/scripts/cleanup_duplicate_registrations.sh" "$APP_BUNDLE"
 /usr/bin/pluginkit -r "$BUILT_EXTENSION" >/dev/null 2>&1 || true
 /usr/bin/ditto "$BUILT_APP" "$APP_BUNDLE"
 

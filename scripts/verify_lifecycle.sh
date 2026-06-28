@@ -138,6 +138,7 @@ done
 for extension_pid in $extension_pids_before; do
   wait_for_pid_exit "$extension_pid" "Finder extension process did not terminate"
 done
+/usr/bin/killall Finder 2>/dev/null || true
 /usr/bin/open -a Finder /
 wait_for_new_extension "$extension_pids_before" "Finder extension did not recover after process termination"
 

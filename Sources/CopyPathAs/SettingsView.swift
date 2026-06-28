@@ -1,6 +1,12 @@
 import CopyPathCore
 import SwiftUI
 
+private struct ScrollGeometryState: Equatable {
+    let contentHeight: CGFloat
+    let viewportHeight: CGFloat
+    let scrollOffset: CGFloat
+}
+
 // swiftlint:disable type_body_length
 struct SettingsView: View {
     @Environment(\.scenePhase) private var scenePhase
@@ -11,13 +17,20 @@ struct SettingsView: View {
     @State private var hoverFormat: PathFormat? = nil
     @State private var currentTab: Tab = .overview
 
+    // Custom Scrollbar State
+    @State private var sidebarContentHeight: CGFloat = 1
+    @State private var sidebarViewportHeight: CGFloat = 1
+    @State private var sidebarScrollOffset: CGFloat = 0
+
     // Copy Toast State
     @State private var showToast = false
     @State private var toastPath = ""
     @State private var toastFormat = ""
     @State private var lastSeenTimestamp: Double = 0.0
-    @State private var copyButtonText = "Copy"
-    @State private var copyButtonIcon = "doc.on.doc"
+    @State private var installationStatus: AppInstallationStatus
+    private let buildIdentity: BuildIdentity
+    private let installationStatusProvider: AppInstallationStatusProviding
+    private let doctorActionPerformer: AppDoctorActionPerforming
 
     let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
 
@@ -26,9 +39,18 @@ struct SettingsView: View {
         case preview
     }
 
-    init(demoState: AppDemoState? = nil) {
+    init(
+        demoState: AppDemoState? = nil,
+        buildIdentity: BuildIdentity = BuildIdentity(),
+        installationStatusProvider: AppInstallationStatusProviding = WorkspaceAppInstallationStatusProvider(),
+        doctorActionPerformer: AppDoctorActionPerforming = WorkspaceAppDoctorActionPerformer()
+    ) {
         self.demoState = demoState
+        self.buildIdentity = buildIdentity
+        self.installationStatusProvider = installationStatusProvider
+        self.doctorActionPerformer = doctorActionPerformer
         _extensionEnabled = State(initialValue: demoState?.initialExtensionEnabled ?? FinderExtensionManager.isEnabled)
+        _installationStatus = State(initialValue: demoState == nil ? installationStatusProvider.currentStatus() : .demoHealthy)
         _selectedFormat = State(initialValue: demoState?.initialFormat ?? .path)
         _testPath = State(
             initialValue: demoState?.initialTestPath
@@ -62,6 +84,7 @@ struct SettingsView: View {
                     Spacer()
                 } else {
                     previewTabView
+                    Spacer()
                 }
 
                 Divider()
@@ -71,6 +94,7 @@ struct SettingsView: View {
                 footerView
                     .padding(.horizontal, 20)
                     .padding(.bottom, 8)
+                    .layoutPriority(1)
             }
             .frame(width: 860, height: 830, alignment: .top)
             .background(Color(nsColor: .windowBackgroundColor))
@@ -88,7 +112,8 @@ struct SettingsView: View {
         .onChange(of: scenePhase) { _, phase in
             guard demoState == nil else { return }
             if phase == .active {
-                extensionEnabled = FinderExtensionManager.isEnabled
+                extensionEnabled = FinderExtensionManager.isRecentlyActive
+                installationStatus = installationStatusProvider.currentStatus()
                 checkForSharedCopyEvents()
             }
         }
@@ -117,6 +142,10 @@ struct SettingsView: View {
                 }
             }
 
+            if let warning = installationStatus.warning {
+                installationWarningView(warning)
+            }
+
             // Extension Status Card / Banner
             if extensionEnabled {
                 HStack(alignment: .center, spacing: 16) {
@@ -126,12 +155,12 @@ struct SettingsView: View {
                         .padding(.leading, 4)
 
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("All set! You can safely close this window.")
+                        Text("All set. Extension is active.")
                             .font(.title3)
                             .fontWeight(.bold)
                             .foregroundStyle(.primary)
 
-                        Text("Copy Path As runs as a background service. Right-click any file in Finder to format and copy its path.")
+                        Text("Runs as a background service. Right-click any file in Finder to format and copy its path.")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
@@ -139,17 +168,6 @@ struct SettingsView: View {
                     Spacer()
 
                     HStack(spacing: 12) {
-                        Button(action: {
-                            NSApp.keyWindow?.close()
-                        }) {
-                            Text("Close Window")
-                                .fontWeight(.semibold)
-                                .padding(.vertical, 6)
-                                .padding(.horizontal, 12)
-                        }
-                        .buttonStyle(.borderedProminent)
-                        .tint(.blue)
-
                         Button(action: {
                             FinderExtensionManager.showManagementInterface()
                         }) {
@@ -182,7 +200,7 @@ struct SettingsView: View {
                             .fontWeight(.bold)
                             .foregroundStyle(.primary)
 
-                        Text("Go to System Settings → Extensions → Finder Extensions, and enable 'Copy Path As'. Once enabled, it runs in the background even when this window is closed.")
+                        Text("Go to System Settings → Extensions → Finder Extensions, and enable the Finder extension. Once enabled, it runs in the background even when this window is closed.")
                             .font(.subheadline)
                             .foregroundStyle(.secondary)
                     }
@@ -226,6 +244,37 @@ struct SettingsView: View {
         .padding(.top, 16)
     }
 
+    private func installationWarningView(_ warning: AppInstallationWarning) -> some View {
+        HStack(alignment: .center, spacing: 16) {
+            Image(systemName: "exclamationmark.triangle.fill")
+                .font(.system(size: 24))
+                .foregroundStyle(.yellow)
+                .padding(.leading, 4)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(warning.title)
+                    .font(.headline)
+                    .fontWeight(.bold)
+                    .foregroundStyle(.primary)
+
+                Text(warning.detail)
+                    .font(.subheadline)
+                    .foregroundStyle(.secondary)
+            }
+
+            Spacer()
+        }
+        .padding()
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.yellow.opacity(0.08))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.yellow.opacity(0.22), lineWidth: 1)
+        )
+    }
+
     private var overviewView: some View {
         HStack(alignment: .top, spacing: 20) {
             // Left Column: Finder Context Menu Mockup
@@ -235,6 +284,7 @@ struct SettingsView: View {
             // Right Column: Why not just Finder? + How it works
             VStack(spacing: 16) {
                 whyNotFinderCard
+                doctorCard
                 howItWorksView
             }
         }
@@ -246,11 +296,12 @@ struct SettingsView: View {
             // Left Column: Presets Library
             formatLibraryView
                 .frame(width: 260)
-                .frame(maxHeight: .infinity)
+                .frame(maxHeight: .infinity, alignment: .top)
 
             // Right Column: Live Preview Console
             previewConsoleView
         }
+        .frame(maxHeight: .infinity)
         .padding(.horizontal, 20)
     }
 
@@ -261,50 +312,57 @@ struct SettingsView: View {
                 .padding(.horizontal, 4)
                 .padding(.bottom, 2)
 
-            VStack(spacing: 4) {
-                ForEach(PathFormat.allCases, id: \.self) { format in
-                    let isSelected = selectedFormat == format
-                    let isHovered = hoverFormat == format
-
-                    Button(action: {
-                        selectedFormat = format
-                    }) {
-                        HStack(spacing: 10) {
-                            Image(systemName: iconName(for: format))
-                                .font(.system(size: 13, weight: .medium))
-                                .foregroundStyle(isSelected ? .white : .blue)
-                                .frame(width: 26, height: 26)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 6)
-                                        .fill(isSelected ? Color.white.opacity(0.2) : Color.blue.opacity(0.08))
-                                )
-
-                            VStack(alignment: .leading, spacing: 2) {
-                                Text(format.displayName)
-                                    .font(.subheadline)
-                                    .fontWeight(isSelected ? .bold : .medium)
-                                    .foregroundStyle(isSelected ? .white : .primary)
-
-                                Text(format.destinationHint)
-                                    .font(.caption)
-                                    .foregroundStyle(isSelected ? .white.opacity(0.85) : .secondary)
-                                    .lineLimit(1)
-                            }
-                            Spacer()
-                        }
-                        .padding(.vertical, 6)
-                        .padding(.horizontal, 10)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(isSelected ? Color.blue : (isHovered ? Color.blue.opacity(0.08) : Color.clear))
-                        )
+            ZStack(alignment: .trailing) {
+                ScrollView(.vertical) {
+                    VStack(spacing: 0) {
+                        formatSection(label: "Shell & Scripts", formats: [.path, .quotedPath, .shellEscapedPath])
+                        formatSectionDivider()
+                        formatSection(label: "Relative", formats: [.homeRelative, .repoRelative])
+                        formatSectionDivider()
+                        formatSection(label: "Web & Data", formats: [.fileURL, .jsonString, .jsonArray, .markdownLink])
+                        formatSectionDivider()
+                        formatSection(label: "File Info", formats: [.filename, .filenameWithoutExtension, .parentFolder])
                     }
-                    .buttonStyle(.plain)
-                    .onHover { hovering in
-                        hoverFormat = hovering ? format : nil
-                    }
+                    .padding(.trailing, 10)
+                    .padding(.bottom, 8)
+                }
+                .scrollIndicators(.hidden)
+                .onScrollGeometryChange(for: ScrollGeometryState.self) { geo in
+                    ScrollGeometryState(
+                        contentHeight: geo.contentSize.height,
+                        viewportHeight: geo.containerSize.height,
+                        scrollOffset: geo.contentOffset.y
+                    )
+                } action: { _, newValue in
+                    sidebarContentHeight = newValue.contentHeight
+                    sidebarViewportHeight = newValue.viewportHeight
+                    sidebarScrollOffset = newValue.scrollOffset
+                }
+
+                if sidebarContentHeight > sidebarViewportHeight {
+                    let ratio = sidebarViewportHeight / sidebarContentHeight
+                    let thumbHeight = max(ratio * sidebarViewportHeight, 30)
+                    let maxScrollableOffset = sidebarContentHeight - sidebarViewportHeight
+                    let maxScrollbarOffset = sidebarViewportHeight - thumbHeight
+                    let fraction = maxScrollableOffset > 0 ? (sidebarScrollOffset / maxScrollableOffset) : 0
+                    let thumbOffset = fraction * maxScrollbarOffset
+
+                    // Track background (extremely subtle)
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.secondary.opacity(0.04))
+                        .frame(width: 6)
+                        .padding(.vertical, 2)
+                        .padding(.trailing, 2)
+
+                    // Drag thumb (always visible)
+                    RoundedRectangle(cornerRadius: 3)
+                        .fill(Color.secondary.opacity(0.3))
+                        .frame(width: 6, height: thumbHeight)
+                        .offset(y: thumbOffset + (thumbHeight / 2) - (sidebarViewportHeight / 2))
+                        .padding(.trailing, 2)
                 }
             }
+            .frame(maxHeight: .infinity)
         }
         .padding(12)
         .background(
@@ -315,12 +373,69 @@ struct SettingsView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.secondary.opacity(0.1), lineWidth: 1)
         )
-        .frame(maxHeight: .infinity, alignment: .top)
+    }
+
+    private func formatSectionDivider() -> some View {
+        Divider()
+            .padding(.vertical, 6)
+            .padding(.horizontal, 4)
+    }
+
+    private func formatSection(label: String, formats: [PathFormat]) -> some View {
+        VStack(alignment: .leading, spacing: 2) {
+            Text(label)
+                .font(.caption2)
+                .fontWeight(.semibold)
+                .foregroundStyle(.tertiary)
+                .textCase(.uppercase)
+                .tracking(0.5)
+                .padding(.horizontal, 10)
+                .padding(.bottom, 2)
+
+            ForEach(formats, id: \.self) { format in
+                let isSelected = selectedFormat == format
+                let isHovered = hoverFormat == format
+
+                Button(action: { selectedFormat = format }) {
+                    HStack(spacing: 10) {
+                        Image(systemName: iconName(for: format))
+                            .font(.system(size: 13, weight: .medium))
+                            .foregroundStyle(isSelected ? .white : .blue)
+                            .frame(width: 26, height: 26)
+                            .background(
+                                RoundedRectangle(cornerRadius: 6)
+                                    .fill(isSelected ? Color.white.opacity(0.2) : Color.blue.opacity(0.08))
+                            )
+
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(format.displayName)
+                                .font(.subheadline)
+                                .fontWeight(isSelected ? .bold : .medium)
+                                .foregroundStyle(isSelected ? .white : .primary)
+
+                            Text(format.destinationHint)
+                                .font(.caption)
+                                .foregroundStyle(isSelected ? .white.opacity(0.85) : .secondary)
+                                .lineLimit(1)
+                        }
+                        Spacer()
+                    }
+                    .padding(.vertical, 6)
+                    .padding(.horizontal, 10)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(isSelected ? Color.blue : (isHovered ? Color.blue.opacity(0.08) : Color.clear))
+                    )
+                }
+                .buttonStyle(.plain)
+                .onHover { hovering in hoverFormat = hovering ? format : nil }
+            }
+        }
     }
 
     private var previewConsoleView: some View {
         VStack(alignment: .leading, spacing: 12) {
-            Text("Try a sample path")
+            Text("Format preview")
                 .font(.headline)
 
             VStack(alignment: .leading, spacing: 4) {
@@ -329,41 +444,28 @@ struct SettingsView: View {
                     .fontWeight(.bold)
                     .foregroundStyle(.secondary)
 
-                HStack {
-                    TextField("Enter path to test formatting", text: $testPath, axis: .vertical)
-                        .textFieldStyle(.roundedBorder)
-                        .font(.system(.body, design: .monospaced))
-                        .lineLimit(1...2)
-
-                    if testPath != "/Users/appleseed/Projects/app/sources/main.swift" {
-                        Button(action: {
-                            testPath = "/Users/appleseed/Projects/app/sources/main.swift"
-                        }) {
-                            Text("Reset")
-                        }
-                        .buttonStyle(.borderless)
-                        .foregroundStyle(.blue)
-                    }
-                }
+                Text(testPath)
+                    .font(.system(.body, design: .monospaced))
+                    .foregroundStyle(.primary)
+                    .padding(.horizontal, 10)
+                    .padding(.vertical, 7)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color(nsColor: .textBackgroundColor))
+                    .clipShape(RoundedRectangle(cornerRadius: 6))
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 6)
+                            .stroke(Color.secondary.opacity(0.15), lineWidth: 1)
+                    )
             }
 
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
-                    Text("Copied result")
+                    Text("Formatted preview")
                         .font(.caption)
                         .fontWeight(.bold)
                         .foregroundStyle(.secondary)
 
                     Spacer()
-
-                    Button(action: {
-                        copyPreviewToClipboard()
-                    }) {
-                        Label(copyButtonText, systemImage: copyButtonIcon)
-                            .font(.caption)
-                    }
-                    .buttonStyle(.borderless)
-                    .foregroundStyle(.blue)
                 }
                 .padding(.horizontal, 12)
                 .padding(.vertical, 6)
@@ -529,6 +631,94 @@ struct SettingsView: View {
         )
     }
 
+    private var doctorCard: some View {
+        let report = AppDoctorReport(
+            installationStatus: installationStatus,
+            extensionRecentlyActive: extensionEnabled
+        )
+
+        return VStack(alignment: .leading, spacing: 10) {
+            HStack(spacing: 10) {
+                Image(systemName: report.issues.isEmpty ? "checkmark.seal.fill" : "stethoscope")
+                    .foregroundStyle(report.issues.isEmpty ? .green : .orange)
+                    .frame(width: 18)
+
+                Text("Doctor")
+                    .font(.title3)
+                    .fontWeight(.bold)
+
+                Spacer()
+
+                Button(action: refreshDoctorStatus) {
+                    Label("Refresh Status", systemImage: "arrow.clockwise")
+                        .font(.caption)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+                .accessibilityIdentifier("doctor-refresh-status")
+            }
+
+            Text(report.title)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+
+            Text(report.summary)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            if !report.issues.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    ForEach(report.issues, id: \.title) { issue in
+                        Label(issue.title, systemImage: "exclamationmark.circle")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .help(issue.detail)
+                    }
+                }
+            }
+
+            if !report.recommendedActions.isEmpty {
+                HStack(spacing: 8) {
+                    ForEach(report.recommendedActions, id: \.self) { action in
+                        doctorActionButton(for: action)
+                    }
+                }
+            }
+        }
+        .padding(12)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color(nsColor: .controlBackgroundColor).opacity(0.3))
+        )
+        .overlay(
+            RoundedRectangle(cornerRadius: 12)
+                .stroke(Color.secondary.opacity(0.1), lineWidth: 1)
+        )
+    }
+
+    @ViewBuilder
+    private func doctorActionButton(for action: AppDoctorAction) -> some View {
+        if action == .restartFinder {
+            Button(action: {
+                performDoctorAction(action)
+            }) {
+                Label(action.title, systemImage: action.systemImage)
+                    .font(.caption)
+            }
+            .buttonStyle(.borderedProminent)
+            .tint(.orange)
+        } else {
+            Button(action: {
+                performDoctorAction(action)
+            }) {
+                Label(action.title, systemImage: action.systemImage)
+                    .font(.caption)
+            }
+            .buttonStyle(.bordered)
+        }
+    }
+
     private var howItWorksView: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text("How it works")
@@ -584,6 +774,13 @@ struct SettingsView: View {
             Text("🔒 Local only. No tracking. No path data leaves your Mac.")
                 .font(.caption2)
                 .foregroundStyle(.secondary)
+
+            Spacer()
+
+            Text(buildIdentity.displayString)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .accessibilityIdentifier("build-identity")
 
             Spacer()
 
@@ -662,24 +859,6 @@ struct SettingsView: View {
         return formatter.format(urls, as: selectedFormat)
     }
 
-    private func copyPreviewToClipboard() {
-        let pasteboard = NSPasteboard.general
-        pasteboard.clearContents()
-        pasteboard.setString(formattedPreview, forType: .string)
-
-        withAnimation {
-            copyButtonText = "Copied!"
-            copyButtonIcon = "checkmark.circle.fill"
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
-            withAnimation {
-                copyButtonText = "Copy"
-                copyButtonIcon = "doc.on.doc"
-            }
-        }
-    }
-
     private func checkForSharedCopyEvents() {
         let timestamp = FinderExtensionManager.readExtensionPreference(forKey: "lastCopiedTimestamp") as? Double ?? 0.0
         guard timestamp > lastSeenTimestamp else { return }
@@ -707,6 +886,28 @@ struct SettingsView: View {
                 }
             }
         }
+    }
+
+    private func refreshDoctorStatus() {
+        guard demoState == nil else { return }
+        extensionEnabled = FinderExtensionManager.isRecentlyActive
+        installationStatus = installationStatusProvider.currentStatus()
+    }
+
+    private func performDoctorAction(_ action: AppDoctorAction) {
+        switch action {
+        case .openExtensionSettings:
+            doctorActionPerformer.openExtensionSettings()
+        case .restartFinder:
+            doctorActionPerformer.restartFinder()
+        case .revealCurrentApp:
+            doctorActionPerformer.revealCurrentApp(installationStatus.currentAppURL)
+        case .revealDuplicateApp:
+            guard let duplicateURL = installationStatus.duplicateAppURLs.first else { return }
+            doctorActionPerformer.revealDuplicateApp(duplicateURL)
+        }
+
+        refreshDoctorStatus()
     }
 }
 

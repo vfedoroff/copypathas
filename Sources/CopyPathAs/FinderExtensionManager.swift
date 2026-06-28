@@ -12,11 +12,10 @@ enum FinderExtensionManager {
     }
 
     static var isEnabled: Bool {
-        if FIFinderSyncController.isExtensionEnabled {
-            return true
-        }
+        isRecentlyActive
+    }
 
-        // Heartbeat fallback: read extension's container plist directly (bypassing sandbox restrictions since app is unsandboxed)
+    static var isRecentlyActive: Bool {
         if let lastActive = readExtensionPreference(forKey: "extensionLastActiveTimestamp") as? Double {
             let now = Date().timeIntervalSince1970
             // Consider the extension enabled if it was active within the last 10 minutes (600 seconds)

@@ -39,6 +39,8 @@ targets:
         CFBundleShortVersionString: $(MARKETING_VERSION)
         CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         LSMinimumSystemVersion: $(MACOSX_DEPLOYMENT_TARGET)
+        LSMultipleInstancesProhibited: false
+        CopyPathSourceHash: $(COPY_PATH_SOURCE_HASH)
         NSHumanReadableCopyright: ""
     dependencies:
       - target: CopyPathCore
@@ -54,8 +56,11 @@ targets:
         GENERATE_INFOPLIST_FILE: NO
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
       configs:
+        Debug:
+          INFOPLIST_FILE: Sources/CopyPathAs/Info.plist
         Release:
           ENABLE_HARDENED_RUNTIME: YES
+          INFOPLIST_FILE: Sources/CopyPathAs/Info-Release.plist
   CopyPathFinderExtension:
     type: app-extension
     platform: macOS
@@ -90,6 +95,10 @@ targets:
     sources:
       - Tests/CopyPathTests
       - Sources/CopyPathAs/AppDemoState.swift
+      - Sources/CopyPathAs/AppDoctorReport.swift
+      - Sources/CopyPathAs/AppInstanceCoordinator.swift
+      - Sources/CopyPathAs/AppInstallationStatus.swift
+      - Sources/CopyPathAs/BuildIdentity.swift
       - Sources/CopyPathAs/AppLifecycleDelegate.swift
       - Sources/CopyPathAs/FinderExtensionManager.swift
       - path: Sources/CopyPathFinderExtension
