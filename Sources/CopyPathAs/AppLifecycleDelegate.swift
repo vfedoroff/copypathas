@@ -38,10 +38,5 @@ final class AppLifecycleDelegate: NSObject, NSApplicationDelegate {
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(formattedValue, forType: .string)
-
-        // Write copy confirmation to the extension container plist for dashboard sync
-        FinderExtensionManager.writeExtensionPreference(SharedPreferenceStore.copiedPathPreview(for: urls), forKey: "lastCopiedPath")
-        FinderExtensionManager.writeExtensionPreference(format.displayName, forKey: "lastCopiedFormat")
-        FinderExtensionManager.writeExtensionPreference(Date().timeIntervalSince1970, forKey: "lastCopiedTimestamp")
     }
 }

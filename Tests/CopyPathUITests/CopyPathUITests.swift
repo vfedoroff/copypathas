@@ -48,17 +48,6 @@ final class CopyPathUITests: XCTestCase {
     }
 
     @MainActor
-    func testDemoCopiedShowsStableToast() {
-        let app = launchApp(demoState: "copied")
-
-        XCTAssertTrue(app.staticTexts["All set. Copy Path As is ready."].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Supported formats"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["copied-toast-title"].waitForExistence(timeout: 2))
-        let toastDetail = app.staticTexts["copied-toast-detail"]
-        XCTAssertTrue(toastDetail.waitForExistence(timeout: 2))
-    }
-
-    @MainActor
     private func launchApp(demoState: String) -> XCUIApplication {
         let app = XCUIApplication()
         app.launchArguments = ["--demo", demoState]

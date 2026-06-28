@@ -4,7 +4,6 @@ enum AppDemoState: String, CaseIterable {
     case overview
     case formats
     case setup
-    case copied
 
     static func parse(arguments: [String]) -> AppDemoState? {
         guard let flagIndex = arguments.firstIndex(of: "--demo") else {
@@ -23,3 +22,4 @@ enum AppDemoState: String, CaseIterable {
         parse(arguments: ProcessInfo.processInfo.arguments)
     }
 }
+

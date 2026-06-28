@@ -2,6 +2,7 @@ import AppKit
 import CopyPathCore
 import FinderSync
 import OSLog
+import UserNotifications
 
 final class FinderSync: FIFinderSync {
     private let directoryRegistry = MonitoredDirectoryRegistry()
@@ -86,14 +87,40 @@ final class FinderSync: FIFinderSync {
 
         do {
             try useCase.execute(selection: selection, format: format)
-
-            // Write copy confirmation to the Shared Preference Store
-            let copiedPreview = SharedPreferenceStore.copiedPathPreview(for: selection.urls)
-            SharedPreferenceStore.shared.set(copiedPreview, forKey: "lastCopiedPath")
-            SharedPreferenceStore.shared.set(format.displayName, forKey: "lastCopiedFormat")
-            SharedPreferenceStore.shared.set(Date().timeIntervalSince1970, forKey: "lastCopiedTimestamp")
+            triggerFeedback(for: selection, format: format)
         } catch {
             logger.error("Unable to copy formatted selection: \(error.localizedDescription, privacy: .public)")
+        }
+    }
+
+    private func triggerFeedback(for selection: FileSelection, format: PathFormat) {
+        let soundEnabled = SharedPreferenceStore.shared.object(forKey: "soundFeedbackEnabled") as? Bool ?? true
+        let notificationEnabled = SharedPreferenceStore.shared.object(forKey: "notificationFeedbackEnabled") as? Bool ?? true
+        let hapticEnabled = SharedPreferenceStore.shared.object(forKey: "hapticFeedbackEnabled") as? Bool ?? false
+
+        if soundEnabled {
+            NSSound(named: "Glass")?.play()
+        }
+
+        if hapticEnabled {
+            NSHapticFeedbackManager.defaultPerformer.perform(.generic, performanceTime: .now)
+        }
+
+        if notificationEnabled {
+            let copiedPreview = SharedPreferenceStore.copiedPathPreview(for: selection.urls)
+            let center = UNUserNotificationCenter.current()
+            center.requestAuthorization(options: [.alert, .sound]) { granted, _ in
+                guard granted else { return }
+
+                let content = UNMutableNotificationContent()
+                content.title = "Copied to Clipboard"
+                content.body = "\(format.displayName): \(copiedPreview)"
+
+                let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 0.1, repeats: false)
+                let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+                UNUserNotificationCenter.current().add(request)
+            }
         }
     }
 }

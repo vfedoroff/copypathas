@@ -1,5 +1,6 @@
 import CopyPathCore
 import SwiftUI
+import UserNotifications
 
 private struct ScrollGeometryState: Equatable {
     let contentHeight: CGFloat
@@ -22,17 +23,15 @@ struct SettingsView: View {
     @State private var sidebarViewportHeight: CGFloat = 1
     @State private var sidebarScrollOffset: CGFloat = 0
 
-    // Copy Toast State
-    @State private var showToast = false
-    @State private var toastPath = ""
-    @State private var toastFormat = ""
-    @State private var lastSeenTimestamp: Double = 0.0
+    // Copy Feedback State
+    @State private var soundFeedbackEnabled = false
+    @State private var notificationFeedbackEnabled = true
+    @State private var hapticFeedbackEnabled = true
+
     @State private var installationStatus: AppInstallationStatus
     private let buildIdentity: BuildIdentity
     private let installationStatusProvider: AppInstallationStatusProviding
     private let doctorActionPerformer: AppDoctorActionPerforming
-
-    let timer = Timer.publish(every: 1.0, on: .main, in: .common).autoconnect()
 
     enum Tab {
         case overview
@@ -57,9 +56,15 @@ struct SettingsView: View {
                 ?? "/Users/appleseed/Projects/app/sources/main.swift"
         )
         _currentTab = State(initialValue: demoState?.initialTab ?? .overview)
-        _showToast = State(initialValue: demoState == .copied)
-        _toastPath = State(initialValue: demoState == .copied ? "README.md" : "")
-        _toastFormat = State(initialValue: demoState == .copied ? PathFormat.markdownLink.displayName : "")
+
+        // Load feedback preferences
+        let sound = SharedPreferenceStore.shared.object(forKey: "soundFeedbackEnabled") as? Bool ?? true
+        let notification = SharedPreferenceStore.shared.object(forKey: "notificationFeedbackEnabled") as? Bool ?? true
+        let haptic = SharedPreferenceStore.shared.object(forKey: "hapticFeedbackEnabled") as? Bool ?? false
+
+        _soundFeedbackEnabled = State(initialValue: sound)
+        _notificationFeedbackEnabled = State(initialValue: notification)
+        _hapticFeedbackEnabled = State(initialValue: haptic)
     }
 
     var body: some View {
@@ -98,24 +103,26 @@ struct SettingsView: View {
             }
             .frame(width: 860, height: 830, alignment: .top)
             .background(Color(nsColor: .windowBackgroundColor))
-
-            // Toast Notification Overlay
-            if showToast {
-                toastOverlayView
-            }
         }
         .frame(width: 860, height: 830)
-        .onReceive(timer) { _ in
-            guard demoState == nil else { return }
-            checkForSharedCopyEvents()
-        }
         .onChange(of: scenePhase) { _, phase in
             guard demoState == nil else { return }
             if phase == .active {
                 extensionEnabled = FinderExtensionManager.isRecentlyActive
                 installationStatus = installationStatusProvider.currentStatus()
-                checkForSharedCopyEvents()
             }
+        }
+        .onChange(of: soundFeedbackEnabled) { _, newValue in
+            SharedPreferenceStore.shared.set(newValue, forKey: "soundFeedbackEnabled")
+        }
+        .onChange(of: notificationFeedbackEnabled) { _, newValue in
+            SharedPreferenceStore.shared.set(newValue, forKey: "notificationFeedbackEnabled")
+            if newValue {
+                UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+            }
+        }
+        .onChange(of: hapticFeedbackEnabled) { _, newValue in
+            SharedPreferenceStore.shared.set(newValue, forKey: "hapticFeedbackEnabled")
         }
     }
 
@@ -281,9 +288,9 @@ struct SettingsView: View {
             contextMenuMockupCard
                 .frame(width: 360)
 
-            // Right Column: Why not just Finder? + How it works
+            // Right Column: Preferences + Doctor + How it works
             VStack(spacing: 16) {
-                whyNotFinderCard
+                preferencesCard
                 doctorCard
                 howItWorksView
             }
@@ -609,17 +616,51 @@ struct SettingsView: View {
         .clipShape(RoundedRectangle(cornerRadius: 3))
     }
 
-    private var whyNotFinderCard: some View {
+    private var preferencesCard: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text("Why not just Finder?")
+            Text("Feedback Preferences")
                 .font(.title3)
                 .fontWeight(.bold)
 
-            Text("Finder can copy paths, but the option is hidden behind Option + right-click. Copy Path As makes file paths visible, customizable, and formatted for the tool you are using.")
-                .font(.body)
-                .foregroundStyle(.primary)
-                .lineSpacing(4)
+            VStack(alignment: .leading, spacing: 8) {
+                Toggle(isOn: $notificationFeedbackEnabled) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Show system notification")
+                            .font(.body)
+                            .fontWeight(.medium)
+                        Text("Display a macOS notification banner on copy.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .toggleStyle(.checkbox)
+
+                Toggle(isOn: $soundFeedbackEnabled) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Play confirmation sound")
+                            .font(.body)
+                            .fontWeight(.medium)
+                        Text("Play a subtle sound when a path is copied.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .toggleStyle(.checkbox)
+
+                Toggle(isOn: $hapticFeedbackEnabled) {
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text("Tactile haptic click")
+                            .font(.body)
+                            .fontWeight(.medium)
+                        Text("Perform a haptic tap on compatible trackpads.")
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                }
+                .toggleStyle(.checkbox)
+            }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(12)
         .background(
             RoundedRectangle(cornerRadius: 12)
@@ -791,42 +832,6 @@ struct SettingsView: View {
         .padding(.vertical, 8)
     }
 
-    private var toastOverlayView: some View {
-        VStack {
-            Spacer()
-
-            HStack(spacing: 12) {
-                Image(systemName: "clipboard.fill")
-                    .font(.title2)
-                    .foregroundStyle(.white)
-
-                VStack(alignment: .leading, spacing: 2) {
-                    Text("Copied Path to Clipboard!")
-                        .font(.subheadline)
-                        .fontWeight(.bold)
-                        .foregroundStyle(.white)
-                        .accessibilityIdentifier("copied-toast-title")
-
-                    Text("\(toastFormat): \(toastPath)")
-                        .font(.caption2)
-                        .foregroundStyle(.white.opacity(0.8))
-                        .lineLimit(1)
-                        .truncationMode(.middle)
-                        .accessibilityIdentifier("copied-toast-detail")
-                }
-                Spacer()
-            }
-            .padding(.vertical, 12)
-            .padding(.horizontal, 16)
-            .background(Color.blue)
-            .clipShape(RoundedRectangle(cornerRadius: 12))
-            .shadow(color: Color.blue.opacity(0.4), radius: 10, y: 4)
-            .frame(maxWidth: 400)
-            .padding(.bottom, 24)
-            .transition(.move(edge: .bottom).combined(with: .opacity))
-        }
-    }
-
     // MARK: - Helpers
 
     private func iconName(for format: PathFormat) -> String {
@@ -859,35 +864,6 @@ struct SettingsView: View {
         return formatter.format(urls, as: selectedFormat)
     }
 
-    private func checkForSharedCopyEvents() {
-        let timestamp = FinderExtensionManager.readExtensionPreference(forKey: "lastCopiedTimestamp") as? Double ?? 0.0
-        guard timestamp > lastSeenTimestamp else { return }
-
-        let path = FinderExtensionManager.readExtensionPreference(forKey: "lastCopiedPath") as? String ?? ""
-        let format = FinderExtensionManager.readExtensionPreference(forKey: "lastCopiedFormat") as? String ?? "Path"
-
-        if lastSeenTimestamp == 0.0 {
-            lastSeenTimestamp = timestamp
-            return
-        }
-
-        lastSeenTimestamp = timestamp
-        toastPath = path
-        toastFormat = format
-
-        withAnimation(.spring()) {
-            showToast = true
-        }
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            withAnimation(.easeOut(duration: 0.5)) {
-                if toastPath == path && toastFormat == format {
-                    showToast = false
-                }
-            }
-        }
-    }
-
     private func refreshDoctorStatus() {
         guard demoState == nil else { return }
         extensionEnabled = FinderExtensionManager.isRecentlyActive
@@ -915,21 +891,21 @@ private extension AppDemoState {
     var initialExtensionEnabled: Bool {
         switch self {
         case .setup: false
-        case .overview, .formats, .copied: true
+        case .overview, .formats: true
         }
     }
 
     var initialFormat: PathFormat {
         switch self {
         case .overview, .setup: .path
-        case .formats, .copied: .markdownLink
+        case .formats: .markdownLink
         }
     }
 
     var initialTab: SettingsView.Tab {
         switch self {
         case .overview, .setup: .overview
-        case .formats, .copied: .preview
+        case .formats: .preview
         }
     }
 
@@ -937,7 +913,7 @@ private extension AppDemoState {
         switch self {
         case .overview, .setup:
             "/Users/appleseed/Projects/app/sources/main.swift"
-        case .formats, .copied:
+        case .formats:
             "/Users/appleseed/Projects/Sample Project/README.md"
         }
     }
