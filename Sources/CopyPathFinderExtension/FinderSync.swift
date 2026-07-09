@@ -33,6 +33,7 @@ final class FinderSync: FIFinderSync {
             formatsMenu.addItem(makeItem(for: format))
         }
         let submenuItem = NSMenuItem(title: "Copy Path As", action: nil, keyEquivalent: "")
+        submenuItem.identifier = NSUserInterfaceItemIdentifier("copy-path-as-menu")
         menu.addItem(submenuItem)
         menu.setSubmenu(formatsMenu, for: submenuItem)
         return menu
@@ -45,6 +46,7 @@ final class FinderSync: FIFinderSync {
 
     private func makeItem(for format: PathFormat) -> NSMenuItem {
         let item = NSMenuItem(title: format.displayName, action: action(for: format), keyEquivalent: "")
+        item.identifier = NSUserInterfaceItemIdentifier("copy-path-as-format-\(format.rawValue)")
         item.target = self
         return item
     }

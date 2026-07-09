@@ -17,21 +17,32 @@ final class CopyPathUITests: XCTestCase {
     func testDemoFormatsShowsFormatsTabAndSamplePath() {
         let app = launchApp(demoState: "formats")
 
-        XCTAssertTrue(app.staticTexts["All set. Copy Path As is ready."].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["settings-root"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["formats-tab"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["format-library"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.otherElements["preview-console"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.otherElements["extension-status-enabled"].waitForExistence(timeout: 2))
         XCTAssertTrue(app.staticTexts["Supported formats"].waitForExistence(timeout: 5))
-        XCTAssertTrue(app.staticTexts["Try a sample path"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["Format preview"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["Sample path"].waitForExistence(timeout: 2))
         XCTAssertTrue(app.staticTexts["Formatted preview"].waitForExistence(timeout: 2))
-        XCTAssertFalse(app.buttons["Copy"].exists)
-        XCTAssertFalse(app.buttons["Copied!"].exists)
-        let testPathValue = app.textFields.firstMatch.value as? String
-        XCTAssertTrue(testPathValue?.contains("Sample Project") == true)
+        XCTAssertTrue(app.buttons["format-option-markdownLink"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["sample-path-value"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["formatted-preview-value"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.staticTexts["sample-path-value"].label.contains("Sample Project"))
     }
 
     @MainActor
     func testDemoOverviewShowsExtensionEnabledBanner() {
         let app = launchApp(demoState: "overview")
 
-        XCTAssertTrue(app.staticTexts["All set. Copy Path As is ready."].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["settings-root"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["overview-tab"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["extension-status-enabled"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.otherElements["context-menu-mockup"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.otherElements["feedback-preferences"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.otherElements["doctor-card"].waitForExistence(timeout: 2))
+        XCTAssertTrue(app.otherElements["how-it-works"].waitForExistence(timeout: 2))
         XCTAssertFalse(app.staticTexts["Extension Not Enabled"].exists)
         XCTAssertFalse(app.buttons["Close Window"].exists)
         XCTAssertTrue(app.staticTexts["Doctor"].waitForExistence(timeout: 2))
@@ -43,6 +54,9 @@ final class CopyPathUITests: XCTestCase {
     func testDemoSetupShowsExtensionDisabledBanner() {
         let app = launchApp(demoState: "setup")
 
+        XCTAssertTrue(app.otherElements["settings-root"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["overview-tab"].waitForExistence(timeout: 5))
+        XCTAssertTrue(app.otherElements["extension-status-disabled"].waitForExistence(timeout: 2))
         XCTAssertTrue(app.staticTexts["Extension Not Enabled"].waitForExistence(timeout: 5))
         XCTAssertTrue(app.buttons["Open Settings"].waitForExistence(timeout: 2))
     }

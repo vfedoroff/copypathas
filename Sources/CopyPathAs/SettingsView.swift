@@ -58,9 +58,15 @@ struct SettingsView: View {
         _currentTab = State(initialValue: demoState?.initialTab ?? .overview)
 
         // Load feedback preferences
-        let sound = SharedPreferenceStore.shared.object(forKey: "soundFeedbackEnabled") as? Bool ?? true
-        let notification = SharedPreferenceStore.shared.object(forKey: "notificationFeedbackEnabled") as? Bool ?? true
-        let haptic = SharedPreferenceStore.shared.object(forKey: "hapticFeedbackEnabled") as? Bool ?? false
+        let sound = demoState == nil
+            ? SharedPreferenceStore.shared.object(forKey: "soundFeedbackEnabled") as? Bool ?? true
+            : false
+        let notification = demoState == nil
+            ? SharedPreferenceStore.shared.object(forKey: "notificationFeedbackEnabled") as? Bool ?? true
+            : false
+        let haptic = demoState == nil
+            ? SharedPreferenceStore.shared.object(forKey: "hapticFeedbackEnabled") as? Bool ?? false
+            : false
 
         _soundFeedbackEnabled = State(initialValue: sound)
         _notificationFeedbackEnabled = State(initialValue: notification)
@@ -80,6 +86,7 @@ struct SettingsView: View {
                     Text("Formats").tag(Tab.preview)
                 }
                 .pickerStyle(.segmented)
+                .accessibilityIdentifier("settings-tab-picker")
                 .frame(width: 240)
                 .padding(.top, -4)
 
@@ -103,8 +110,10 @@ struct SettingsView: View {
             }
             .frame(width: 860, height: 830, alignment: .top)
             .background(Color(nsColor: .windowBackgroundColor))
+            .accessibilityIdentifier("settings-dashboard")
         }
         .frame(width: 860, height: 830)
+        .accessibilityIdentifier("settings-root")
         .onChange(of: scenePhase) { _, phase in
             guard demoState == nil else { return }
             if phase == .active {
@@ -186,6 +195,7 @@ struct SettingsView: View {
                     }
                 }
                 .padding()
+                .accessibilityIdentifier("extension-status-enabled")
                 .background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.green.opacity(0.06))
@@ -237,6 +247,7 @@ struct SettingsView: View {
                     }
                 }
                 .padding()
+                .accessibilityIdentifier("extension-status-disabled")
                 .background(
                     RoundedRectangle(cornerRadius: 12)
                         .fill(Color.orange.opacity(0.06))
@@ -249,6 +260,7 @@ struct SettingsView: View {
         }
         .padding(.horizontal, 20)
         .padding(.top, 16)
+        .accessibilityIdentifier("settings-hero")
     }
 
     private func installationWarningView(_ warning: AppInstallationWarning) -> some View {
@@ -296,6 +308,7 @@ struct SettingsView: View {
             }
         }
         .padding(.horizontal, 20)
+        .accessibilityIdentifier("overview-tab")
     }
 
     private var previewTabView: some View {
@@ -310,6 +323,7 @@ struct SettingsView: View {
         }
         .frame(maxHeight: .infinity)
         .padding(.horizontal, 20)
+        .accessibilityIdentifier("formats-tab")
     }
 
     private var formatLibraryView: some View {
@@ -380,6 +394,7 @@ struct SettingsView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.secondary.opacity(0.1), lineWidth: 1)
         )
+        .accessibilityIdentifier("format-library")
     }
 
     private func formatSectionDivider() -> some View {
@@ -435,6 +450,7 @@ struct SettingsView: View {
                     )
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("format-option-\(format.rawValue)")
                 .onHover { hovering in hoverFormat = hovering ? format : nil }
             }
         }
@@ -463,6 +479,7 @@ struct SettingsView: View {
                         RoundedRectangle(cornerRadius: 6)
                             .stroke(Color.secondary.opacity(0.15), lineWidth: 1)
                     )
+                    .accessibilityIdentifier("sample-path-value")
             }
 
             VStack(alignment: .leading, spacing: 0) {
@@ -490,6 +507,7 @@ struct SettingsView: View {
                 }
                 .frame(minHeight: 48, maxHeight: .infinity, alignment: .topLeading)
                 .background(Color(nsColor: .textBackgroundColor))
+                .accessibilityIdentifier("formatted-preview-value")
             }
             .clipShape(RoundedRectangle(cornerRadius: 8))
             .overlay(
@@ -507,6 +525,7 @@ struct SettingsView: View {
                 .stroke(Color.secondary.opacity(0.1), lineWidth: 1)
         )
         .frame(maxHeight: .infinity)
+        .accessibilityIdentifier("preview-console")
     }
 
     private var contextMenuMockupCard: some View {
@@ -583,6 +602,7 @@ struct SettingsView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.secondary.opacity(0.1), lineWidth: 1)
         )
+        .accessibilityIdentifier("context-menu-mockup")
     }
 
     private func mockupMenuItem(title: String, icon: String) -> some View {
@@ -670,6 +690,7 @@ struct SettingsView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.secondary.opacity(0.1), lineWidth: 1)
         )
+        .accessibilityIdentifier("feedback-preferences")
     }
 
     private var doctorCard: some View {
@@ -736,6 +757,7 @@ struct SettingsView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.secondary.opacity(0.1), lineWidth: 1)
         )
+        .accessibilityIdentifier("doctor-card")
     }
 
     @ViewBuilder
@@ -782,6 +804,7 @@ struct SettingsView: View {
             RoundedRectangle(cornerRadius: 12)
                 .stroke(Color.secondary.opacity(0.1), lineWidth: 1)
         )
+        .accessibilityIdentifier("how-it-works")
     }
 
     private func howItWorksStep(num: String, title: String, desc: String) -> some View {

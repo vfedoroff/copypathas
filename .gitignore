@@ -10,4 +10,7 @@ xcuserdata/
 # Local signing configuration overrides
 Configs/Config.local.xcconfig
 .envrc
-docs/assets/appstore/
+docs/assets/appstore/*
+!docs/assets/appstore/
+!docs/assets/appstore/*.sh
+!docs/assets/appstore/README.md
